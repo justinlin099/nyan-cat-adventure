@@ -1,5 +1,6 @@
 PImage playerImg;
 PImage[] tree=new PImage[4];
+PImage[] car=new PImage[4];
 int landX, landY;
 float tranX=0, tranY=0;
 Player player;
@@ -10,7 +11,7 @@ boolean debugMode=false;
 Map[] maps=new Map[40];
 final int ROAD=1, GRASS=0;
 final int TREE=1;
-
+final int CAR=1;
 
 void setup() {
   size(1280, 720, P2D);
@@ -19,6 +20,10 @@ void setup() {
   //loading Tree Image
   for(int i=0;i<4;i++){
     tree[i] = loadImage("img/tree" + i + ".png") ;
+  }  
+  //loading Car Image
+  for(int i=0;i<4;i++){
+    car[i] = loadImage("img/car" + (i+1) + ".png") ;
   }
   
   for (int i=0; i<maps.length; i++) {
@@ -42,7 +47,7 @@ void draw() {
   for (int i=550; i>=0; i=i-25) {
     if (tranY+player.y<=i) {
       tranX-=0.125;
-      tranY+=0.25;
+      tranY+=0.25; 
     }
   }
   tranX-=0.125;
@@ -68,7 +73,6 @@ void draw() {
   for (int j=39; j>=0; j--) {
     maps[j].displayObjects();
   }
-
 
   popMatrix();
 }

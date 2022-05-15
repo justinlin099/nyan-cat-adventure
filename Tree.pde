@@ -13,5 +13,5 @@ class Tree{
   void display(){
     drawImage(treeImg,treeX,treeY);
   }
-  
+
 }

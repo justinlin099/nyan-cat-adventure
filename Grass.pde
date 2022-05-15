@@ -21,6 +21,7 @@ class Grass extends Map {
       trees[i]=new Tree(newTreeX, y);
     }
   }
+ 
   void display() {
     for (int i=0; i<19; i++) {
       if (i<6 || i>14) {
