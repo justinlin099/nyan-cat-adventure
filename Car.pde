@@ -1,7 +1,7 @@
 class Car{
   int x,y;
   int carX,carY;
-  float speed = floor(random(-2,2));
+  float speed = floor(random(1,2));
   PImage carImg;
   Car(int x,int y){
     this.x=x;
