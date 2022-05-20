@@ -17,15 +17,13 @@ void setup() {
   size(1280, 720, P2D);
   noStroke();
   playerImg = loadImage("img/player.png");
+  
   //loading Tree Image
   for(int i=0;i<4;i++){
     tree[i] = loadImage("img/tree" + i + ".png") ;
+    car[i] = loadImage("img/car" + i + ".png") ;
   }  
-  //loading Car Image
-  for(int i=0;i<4;i++){
-    car[i] = loadImage("img/car" + (i+1) + ".png") ;
-  }
-  
+
   for (int i=0; i<maps.length; i++) {
     if (i<16) {
       maps[i]=new Grass(20-i);
