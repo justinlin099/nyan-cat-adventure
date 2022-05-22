@@ -3,6 +3,7 @@ class Road extends Map {
   Road(int y) {
     super(y);
     type=ROAD;
+    
     //generate car
     cars=new Car[floor(random(5))];
     int newCarX;
