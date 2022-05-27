@@ -1,6 +1,7 @@
 PImage playerImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
+PImage logImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
 Player player;
