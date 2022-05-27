@@ -18,6 +18,7 @@ void setup() {
   noStroke();
   playerImg = loadImage("img/player.png");
   
+  
   //loading Tree Image
   for(int i=0;i<4;i++){
     tree[i] = loadImage("img/tree" + i + ".png") ;

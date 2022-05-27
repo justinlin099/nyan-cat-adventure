@@ -44,8 +44,9 @@ class Road extends Map {
   }
 
   void displayObjects() {
-    for (int i=0; i<cars.length; i++) {
+    for (int i=cars.length-1; i>=0; i--) {
       cars[i].display();
+      cars[i].update();
     }
   }
 
