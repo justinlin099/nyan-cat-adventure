@@ -18,25 +18,29 @@ void setup() {
   size(1280, 720, P2D);
   noStroke();
   playerImg = loadImage("img/player.png");
-  
-  
+
+
   //loading Tree Image
-  for(int i=0;i<4;i++){
+  for (int i=0; i<4; i++) {
     tree[i] = loadImage("img/tree" + i + ".png") ;
     car[i] = loadImage("img/car" + i + ".png") ;
-  }  
+  }
 
   for (int i=0; i<maps.length; i++) {
     if (i<16) {
       maps[i]=new Grass(20-i);
     } else {
-      switch(floor(random(2))){
-          case 0:maps[i]=new Grass(20-i);break;
-          case 1:maps[i]=new Road(20-i);break;
+      switch(floor(random(2))) {
+      case 0:
+        maps[i]=new Grass(20-i);
+        break;
+      case 1:
+        maps[i]=new Road(20-i);
+        break;
       }
     }
   }
-  
+
   player = new Player();
 }
 
@@ -47,12 +51,12 @@ void draw() {
   for (int i=550; i>=0; i=i-25) {
     if (tranY+player.y<=i) {
       tranX-=0.125;
-      tranY+=0.25; 
+      tranY+=0.25;
     }
   }
   tranX-=0.125;
   tranY+=0.25;
-  
+
   //Rolling the screen
   translate(tranX, tranY);
 
@@ -68,7 +72,7 @@ void draw() {
 
   //drawPlayer
   player.update();
-  
+
   //draw tree
   for (int j=39; j>=0; j--) {
     maps[j].displayObjects();
@@ -90,12 +94,17 @@ void keyPressed() {
         for (int i=0; i<39; i++) {
           maps[i]=maps[i+1];
         }
-        switch(floor(random(3))){
-          case 0:maps[39]=new Grass(player.offsetY-27);break;
-          case 1:maps[39]=new Road(player.offsetY-27);break;
-          case 2:maps[39]=new Road(player.offsetY-27);break;
+        switch(floor(random(3))) {
+        case 0:
+          maps[39]=new Grass(player.offsetY-27);
+          break;
+        case 1:
+          maps[39]=new Road(player.offsetY-27);
+          break;
+        case 2:
+          maps[39]=new Road(player.offsetY-27);
+          break;
         }
-        
       }
       break;
     case RIGHT:
@@ -117,7 +126,7 @@ void keyPressed() {
         playerState=PLAYER_DOWN;
         player.movingTimer=0;
         player.offsetY++;
-        
+
         //offset map backward and create new map
         for (int i=39; i>0; i--) {
           maps[i]=maps[i-1];
@@ -125,8 +134,8 @@ void keyPressed() {
       }
       break;
     }
-  }else{
-    if(key=='b'){
+  } else {
+    if (key=='b') {
       // Press B to toggle demo mode
       debugMode = !debugMode;
     }

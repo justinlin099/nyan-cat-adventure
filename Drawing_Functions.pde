@@ -16,8 +16,8 @@ void roadMarkingLine(int y) {
 
 //code for draw image form the position point
 void drawImage(PImage img,float x,float y){
-  if((img.width-30)%110==0){
-    int n=int((img.width-30)/110);
+  if((img.width-30)%80==0){
+    int n=int((img.width-30)/80);
     image(img,x,y-(img.height-20*n));
   }
 }
