@@ -7,6 +7,7 @@ float tranX=0, tranY=0;
 Player player;
 int playerState;
 final int PLAYER_IDLE=0, PLAYER_UP=1, PLAYER_DOWN=2, PLAYER_RIGHT=3, PLAYER_LEFT=4;
+final int CAT_PADX=30;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
@@ -17,7 +18,7 @@ final int CAR=1;
 void setup() {
   size(1280, 720, P2D);
   noStroke();
-  playerImg = loadImage("img/player.png");
+  playerImg = loadImage("img/nyan0.png");
 
 
   //loading Tree Image
@@ -69,7 +70,7 @@ void draw() {
   for (int j=39; j>0; j--) {
     roadMarkingLine(j);
   }
-  
+
   //draw objects
   for (int j=39; j>=13; j--) {
     maps[j].displayObjects();

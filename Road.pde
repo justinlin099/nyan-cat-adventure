@@ -44,6 +44,9 @@ class Road extends Map {
     for (int i=cars.length-1; i>=0; i--) {
       cars[i].display();
       cars[i].update();
+      if(cars[i].checkCollision(player,PLAYER_UP)){
+        print("Hit");
+      }
     }
   }
 
