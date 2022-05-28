@@ -5,26 +5,23 @@ class Road extends Map {
     type=ROAD;
 
     //generate car
-    cars=new Car[floor(random(5))];
-    int newCarX;
-    for (int i=0; i<cars.length; i++) {
-      if (floor(random(2))==0) {
-        newCarX=floor(random(3));
-        while (checkCarXreuse(newCarX, i)) {
-          newCarX=6+floor(random(3));
-        }
-      } else {
-        newCarX=6+floor(random(3));
-        while (checkCarXreuse(newCarX, i)) {
-          newCarX=floor(random(3));
-        }
-      }
-      cars[i]=new Car(newCarX, y);
+    cars=new Car[4];
+    int space=floor(random(4,8));
+    float speed;
+    if(floor(random(2))==0){
+      speed=random(0.2,1);
+    }else{
+      speed=-random(0.2,1);
     }
+    int newCarX=floor(random(-6,-3));
+    cars[0]=new Car(newCarX,y,speed);
+    cars[1]=new Car(newCarX+space,y,speed);
+    cars[2]=new Car(newCarX+10,y,speed);
+    cars[3]=new Car(newCarX+10+space,y,speed);
   }
 
   void display() {
-    for (int i=0; i<19; i++) {
+    for (int i=0; i<20; i++) {
       fill(#404040);
       landX=i*80+y*(-30);
       landY=i*20+y*60;
@@ -60,12 +57,5 @@ class Road extends Map {
     return -1;
   }
 
-  boolean checkCarXreuse(int newCarX, int n) {
-    for (int i=0; i<n; i++) {
-      if (cars[i].x==newCarX) {
-        return true;
-      }
-    }
-    return false;
-  }
+  
 }

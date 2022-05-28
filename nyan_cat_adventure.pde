@@ -69,12 +69,17 @@ void draw() {
   for (int j=39; j>0; j--) {
     roadMarkingLine(j);
   }
+  
+  //draw objects
+  for (int j=39; j>=13; j--) {
+    maps[j].displayObjects();
+  }
 
   //drawPlayer
   player.update();
 
-  //draw tree
-  for (int j=39; j>=0; j--) {
+  //draw objects
+  for (int j=12; j>=0; j--) {
     maps[j].displayObjects();
   }
 
@@ -86,7 +91,7 @@ void keyPressed() {
   if (key ==CODED) {
     switch(keyCode) {
     case UP:
-      if (playerState==PLAYER_IDLE && maps[13].checkObjects(player.offsetX)!=TREE && maps[13].checkObjects(player.offsetX)!=CAR) {
+      if (playerState==PLAYER_IDLE && maps[13].checkObjects(player.offsetX)!=TREE) {
         playerState=PLAYER_UP;
         player.movingTimer=0;
         player.offsetY--;
@@ -108,21 +113,21 @@ void keyPressed() {
       }
       break;
     case RIGHT:
-      if (playerState==PLAYER_IDLE && player.offsetX<8 && maps[12].checkObjects(player.offsetX+1)!=TREE && maps[12].checkObjects(player.offsetX+1)!=CAR) {
+      if (playerState==PLAYER_IDLE && player.offsetX<8 && maps[12].checkObjects(player.offsetX+1)!=TREE) {
         playerState=PLAYER_RIGHT;
         player.movingTimer=0;
         player.offsetX++;
       }
       break;
     case LEFT:
-      if (playerState==PLAYER_IDLE && player.offsetX>0 && maps[12].checkObjects(player.offsetX-1)!=TREE && maps[12].checkObjects(player.offsetX-1)!=CAR) {
+      if (playerState==PLAYER_IDLE && player.offsetX>0 && maps[12].checkObjects(player.offsetX-1)!=TREE) {
         playerState=PLAYER_LEFT;
         player.movingTimer=0;
         player.offsetX--;
       }
       break;
     case DOWN:
-      if (playerState==PLAYER_IDLE && maps[11].checkObjects(player.offsetX)!=TREE && maps[11].checkObjects(player.offsetX)!=CAR) {
+      if (playerState==PLAYER_IDLE && maps[11].checkObjects(player.offsetX)!=TREE) {
         playerState=PLAYER_DOWN;
         player.movingTimer=0;
         player.offsetY++;
