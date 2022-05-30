@@ -13,8 +13,211 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 
-public class Car extends PApplet {
+public class nyan_cat_adventure extends PApplet {
 
+PImage playerImg,nyan0,coinImg;
+PImage[] tree=new PImage[4];
+PImage[] car=new PImage[4];
+PImage logImg; //replace this with coin image
+int landX, landY;
+float tranX=0, tranY=0;
+Player player;
+int playerState;
+final int PLAYER_IDLE=0, PLAYER_UP=1, PLAYER_DOWN=2, PLAYER_RIGHT=3, PLAYER_LEFT=4;
+final int CAT_PADX=30;
+final int GAME_START = 0, GAME_RUN = 1, GAME_OVER = 2;
+int gameState = 0;
+int coinCount=0;
+int hiScore=0;
+
+boolean debugMode=false;
+Map[] maps=new Map[40];
+final int ROAD=1, GRASS=0;
+final int TREE=1;
+final int CAR=1;
+
+ public void initGame() {
+  for (int i=0; i<maps.length; i++) {
+    if (i<16) {
+      maps[i]=new Grass(20-i);
+    } else {
+      switch(floor(random(2))) {
+      case 0:
+        maps[i]=new Grass(20-i);
+        break;
+      case 1:
+        maps[i]=new Road(20-i);
+        break;
+      }
+    }
+  }
+}
+
+ public void setup() {
+  /* size commented out by preprocessor */;
+  noStroke();
+  nyan0 = loadImage("img/nyan0.png");
+  playerImg=nyan0;
+  logImg=loadImage("img/gutter-cover.png");
+  coinImg=loadImage("img/coin.png");
+
+  //loading Tree Image
+  for (int i=0; i<4; i++) {
+    tree[i] = loadImage("img/tree" + i + ".png") ;
+    car[i] = loadImage("img/car" + i + ".png") ;
+  }
+
+  initGame();
+
+  player = new Player();
+}
+
+
+ public void draw() {
+
+  pushMatrix();
+  //Adjust Rolling Speed
+  switch (gameState) {
+
+  case GAME_START:
+    if (tranX<-400) {
+      tranX=-400;
+      tranY=800;
+    }
+    if (tranX<0) {
+      for (int i=-400; i<=0; i=i+20) {
+        if (tranX<=i) {
+          tranX+=1;
+          tranY-=2;
+        }
+      }
+    }
+    break;
+  case GAME_RUN:
+    for (int i=550; i>=0; i=i-25) {
+      if (tranY+player.y<=i) {
+        tranX-=0.125f;
+        tranY+=0.25f;
+      }
+    }
+    tranX-=0.125f;
+    tranY+=0.25f;
+    break;
+  case GAME_OVER:
+    playerImg = logImg;
+  }
+
+
+  //Rolling the screen
+  translate(tranX, tranY);
+
+
+  //draw map
+
+  for (int j=39; j>=0; j--) {
+    maps[j].display();
+  }
+  for (int j=39; j>0; j--) {
+    roadMarkingLine(j);
+  }
+
+  //draw objects
+  for (int j=39; j>=13; j--) {
+    maps[j].displayObjects();
+  }
+
+  //drawPlayer
+  player.update();
+
+  //draw objects
+  for (int j=12; j>=0; j--) {
+    maps[j].displayObjects();
+  }
+
+  popMatrix();
+
+  //draw score
+
+  drawScore();
+}
+
+ public void keyPressed() {
+  // Add your moving input code here
+  if (key ==CODED) {
+    switch(keyCode) {
+    case UP:
+      if (gameState==GAME_START && tranX>=0) {
+        gameState=GAME_RUN;
+      }
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && maps[13].checkObjects(player.offsetX)!=TREE) {
+        playerState=PLAYER_UP;
+        player.movingTimer=0;
+        player.offsetY--;
+        //offset map forward and create new map
+        for (int i=0; i<39; i++) {
+          maps[i]=maps[i+1];
+        }
+        switch(floor(random(3))) {
+        case 0:
+          maps[39]=new Grass(player.offsetY-27);
+          break;
+        case 1:
+          maps[39]=new Road(player.offsetY-27);
+          break;
+        case 2:
+          maps[39]=new Road(player.offsetY-27);
+          break;
+        }
+      }
+
+      
+      break;
+    case RIGHT:
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && player.offsetX<8 && maps[12].checkObjects(player.offsetX+1)!=TREE) {
+        playerState=PLAYER_RIGHT;
+        player.movingTimer=0;
+        player.offsetX++;
+      }
+      break;
+    case LEFT:
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && player.offsetX>0 && maps[12].checkObjects(player.offsetX-1)!=TREE) {
+        playerState=PLAYER_LEFT;
+        player.movingTimer=0;
+        player.offsetX--;
+      }
+      break;
+    case DOWN:
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && maps[11].checkObjects(player.offsetX)!=TREE) {
+        playerState=PLAYER_DOWN;
+        player.movingTimer=0;
+        player.offsetY++;
+
+        //offset map backward and create new map
+        for (int i=39; i>0; i--) {
+          maps[i]=maps[i-1];
+        }
+      }
+      break;
+    }
+  } else {
+    if (key=='b') {
+      // Press B to toggle demo mode
+      debugMode = !debugMode;
+    }
+    if (key==ENTER){
+      if (gameState==GAME_OVER) {
+        gameState=GAME_START;
+        player.x=560;
+        player.y=680;
+        player.offsetX=4;
+        player.offsetY=8;
+        player.movingTimer=0;
+        playerImg = loadImage("img/nyan0.png");
+        initGame();
+      }
+    }
+  }
+}
 class Car {
   float x, y;
   float carX, carY;
@@ -422,8 +625,10 @@ for (int i=0; i<coins.length; i++) {
 */
 
 
+  public void settings() { size(1280, 720, P2D); }
+
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "Car" };
+    String[] appletArgs = new String[] { "nyan_cat_adventure" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {
