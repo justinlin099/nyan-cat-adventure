@@ -36,10 +36,21 @@ int score() {
 }
 
 void drawScore() {
+  if(hiScore<score()){
+    hiScore=score();
+  }
   textSize(100);
   fill(255);
   text(score(), 30, 100);
   textSize(30);
+  text("HI: "+ hiScore, 30, 150);
+  if (debugMode) {
+      text(tranY, 30, 230);
+      text(player.y+ hiScore, 30, 260);
+  }
+  
+  textSize(30);
   fill(255,255,0);
   text(coinCount, 30, 200);
+
 }

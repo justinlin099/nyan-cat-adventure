@@ -1,6 +1,7 @@
 PImage playerImg,nyan0,coinImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
+PImage[] truck=new PImage[2];
 PImage logImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
@@ -43,12 +44,19 @@ void setup() {
   playerImg=nyan0;
   logImg=loadImage("img/gutter-cover.png");
   coinImg=loadImage("img/coin.png");
+  
 
-  //loading Tree Image
+  //loading Tree & Car Image
   for (int i=0; i<4; i++) {
     tree[i] = loadImage("img/tree" + i + ".png") ;
     car[i] = loadImage("img/car" + i + ".png") ;
   }
+
+  for (int i=0; i<2; i++) {
+    truck[i] = loadImage("img/truck" + i + ".png") ;
+  }
+
+
 
   initGame();
 
@@ -122,6 +130,12 @@ void draw() {
   //draw score
 
   drawScore();
+
+  //detect if cat is out of the screen
+  
+  if(tranY+ player.y-720-60>0 && gameState==GAME_RUN){
+    gameState=GAME_OVER;
+  }
 }
 
 void keyPressed() {

@@ -5,18 +5,30 @@ class Road extends Map {
     type=ROAD;
 
     //generate car
-    cars=new Car[3];
-    int space=floor(random(4,12));
-    float speed;
-    if(floor(random(2))==0){
-      speed=random(0.2,1);
+    if(floor(random(3))==0){
+      cars=new Car[2];
+      int space=floor(random(4,16));
+      float speed;
+      speed=-random(0.4,1);
+      
+      int newCarX=floor(random(-6,-3));
+      cars[0]=new Truck(newCarX,y,speed);
+      cars[1]=new Truck(newCarX+space,y,speed);
+
     }else{
-      speed=-random(0.2,1);
+      cars=new Car[3];
+      int space=floor(random(4,12));
+      float speed;
+      if(floor(random(2))==0){
+        speed=random(0.2,1);
+      }else{
+        speed=-random(0.2,1);
+      }
+      int newCarX=floor(random(-6,-3));
+      cars[0]=new Car(newCarX,y,speed);
+      cars[1]=new Car(newCarX+space,y,speed);
+      cars[2]=new Car(newCarX+15,y,speed);
     }
-    int newCarX=floor(random(-6,-3));
-    cars[0]=new Car(newCarX,y,speed);
-    cars[1]=new Car(newCarX+space,y,speed);
-    cars[2]=new Car(newCarX+15,y,speed);
   }
 
   void display() {
