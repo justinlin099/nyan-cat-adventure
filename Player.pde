@@ -15,9 +15,9 @@ class Player {
 
     switch(playerState) {
     case PLAYER_IDLE:
-      if(maps[12].type==GRASS){
+      if (maps[12].type==GRASS) {
         drawImage(playerImg, x, y-5);
-      }else{
+      } else {
         drawImage(playerImg, x, y);
       }
       break;
@@ -46,13 +46,13 @@ class Player {
       drawImage(playerImg, x, y-10);
       break;
     }
-    
+
     if (debugMode) {
-        fill(0);
-        textSize(30);
-        text(offsetX+","+offsetY,x+55,y);
-      }
-      
+      fill(0);
+      textSize(30);
+      text(offsetX+","+offsetY, x+55, y);
+    }
+
     if (movingTimer==10) {
       playerState=PLAYER_IDLE;
       movingTimer=0;
