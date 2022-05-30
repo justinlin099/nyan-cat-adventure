@@ -5,8 +5,8 @@ class Road extends Map {
     type=ROAD;
 
     //generate car
-    cars=new Car[4];
-    int space=floor(random(4,8));
+    cars=new Car[3];
+    int space=floor(random(4,12));
     float speed;
     if(floor(random(2))==0){
       speed=random(0.2,1);
@@ -16,8 +16,7 @@ class Road extends Map {
     int newCarX=floor(random(-6,-3));
     cars[0]=new Car(newCarX,y,speed);
     cars[1]=new Car(newCarX+space,y,speed);
-    cars[2]=new Car(newCarX+10,y,speed);
-    cars[3]=new Car(newCarX+10+space,y,speed);
+    cars[2]=new Car(newCarX+15,y,speed);
   }
 
   void display() {
@@ -45,7 +44,7 @@ class Road extends Map {
       cars[i].display();
       cars[i].update();
       if(cars[i].checkCollision(player,PLAYER_UP)){
-        print("Hit");
+        gameState=GAME_OVER;
       }
     }
   }

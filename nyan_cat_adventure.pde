@@ -1,4 +1,4 @@
-PImage playerImg;
+PImage playerImg,nyan0,coinImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage logImg; //replace this with coin image
@@ -8,6 +8,10 @@ Player player;
 int playerState;
 final int PLAYER_IDLE=0, PLAYER_UP=1, PLAYER_DOWN=2, PLAYER_RIGHT=3, PLAYER_LEFT=4;
 final int CAT_PADX=30;
+final int GAME_START = 0, GAME_RUN = 1, GAME_OVER = 2;
+int gameState = 0;
+int coinCount=0;
+int hiScore=0;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
@@ -15,18 +19,7 @@ final int ROAD=1, GRASS=0;
 final int TREE=1;
 final int CAR=1;
 
-void setup() {
-  size(1280, 720, P2D);
-  noStroke();
-  playerImg = loadImage("img/nyan0.png");
-
-
-  //loading Tree Image
-  for (int i=0; i<4; i++) {
-    tree[i] = loadImage("img/tree" + i + ".png") ;
-    car[i] = loadImage("img/car" + i + ".png") ;
-  }
-
+void initGame() {
   for (int i=0; i<maps.length; i++) {
     if (i<16) {
       maps[i]=new Grass(20-i);
@@ -41,22 +34,62 @@ void setup() {
       }
     }
   }
+}
+
+void setup() {
+  size(1280, 720, P2D);
+  noStroke();
+  nyan0 = loadImage("img/nyan0.png");
+  playerImg=nyan0;
+  logImg=loadImage("img/gutter-cover.png");
+  coinImg=loadImage("img/coin.png");
+
+  //loading Tree Image
+  for (int i=0; i<4; i++) {
+    tree[i] = loadImage("img/tree" + i + ".png") ;
+    car[i] = loadImage("img/car" + i + ".png") ;
+  }
+
+  initGame();
 
   player = new Player();
 }
 
 
 void draw() {
+
   pushMatrix();
   //Adjust Rolling Speed
-  for (int i=550; i>=0; i=i-25) {
-    if (tranY+player.y<=i) {
-      tranX-=0.125;
-      tranY+=0.25;
+  switch (gameState) {
+
+  case GAME_START:
+    if (tranX<-400) {
+      tranX=-400;
+      tranY=800;
     }
+    if (tranX<0) {
+      for (int i=-400; i<=0; i=i+20) {
+        if (tranX<=i) {
+          tranX+=1;
+          tranY-=2;
+        }
+      }
+    }
+    break;
+  case GAME_RUN:
+    for (int i=550; i>=0; i=i-25) {
+      if (tranY+player.y<=i) {
+        tranX-=0.125;
+        tranY+=0.25;
+      }
+    }
+    tranX-=0.125;
+    tranY+=0.25;
+    break;
+  case GAME_OVER:
+    playerImg = logImg;
   }
-  tranX-=0.125;
-  tranY+=0.25;
+
 
   //Rolling the screen
   translate(tranX, tranY);
@@ -85,6 +118,10 @@ void draw() {
   }
 
   popMatrix();
+
+  //draw score
+
+  drawScore();
 }
 
 void keyPressed() {
@@ -92,7 +129,10 @@ void keyPressed() {
   if (key ==CODED) {
     switch(keyCode) {
     case UP:
-      if (playerState==PLAYER_IDLE && maps[13].checkObjects(player.offsetX)!=TREE) {
+      if (gameState==GAME_START && tranX>=0) {
+        gameState=GAME_RUN;
+      }
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && maps[13].checkObjects(player.offsetX)!=TREE) {
         playerState=PLAYER_UP;
         player.movingTimer=0;
         player.offsetY--;
@@ -112,23 +152,25 @@ void keyPressed() {
           break;
         }
       }
+
+      
       break;
     case RIGHT:
-      if (playerState==PLAYER_IDLE && player.offsetX<8 && maps[12].checkObjects(player.offsetX+1)!=TREE) {
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && player.offsetX<8 && maps[12].checkObjects(player.offsetX+1)!=TREE) {
         playerState=PLAYER_RIGHT;
         player.movingTimer=0;
         player.offsetX++;
       }
       break;
     case LEFT:
-      if (playerState==PLAYER_IDLE && player.offsetX>0 && maps[12].checkObjects(player.offsetX-1)!=TREE) {
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && player.offsetX>0 && maps[12].checkObjects(player.offsetX-1)!=TREE) {
         playerState=PLAYER_LEFT;
         player.movingTimer=0;
         player.offsetX--;
       }
       break;
     case DOWN:
-      if (playerState==PLAYER_IDLE && maps[11].checkObjects(player.offsetX)!=TREE) {
+      if (gameState==GAME_RUN && playerState==PLAYER_IDLE && maps[11].checkObjects(player.offsetX)!=TREE) {
         playerState=PLAYER_DOWN;
         player.movingTimer=0;
         player.offsetY++;
@@ -144,6 +186,18 @@ void keyPressed() {
     if (key=='b') {
       // Press B to toggle demo mode
       debugMode = !debugMode;
+    }
+    if (key==ENTER){
+      if (gameState==GAME_OVER) {
+        gameState=GAME_START;
+        player.x=560;
+        player.y=680;
+        player.offsetX=4;
+        player.offsetY=8;
+        player.movingTimer=0;
+        playerImg = loadImage("img/nyan0.png");
+        initGame();
+      }
     }
   }
 }
