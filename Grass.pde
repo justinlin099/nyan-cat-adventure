@@ -23,7 +23,7 @@ class Grass extends Map {
   }
  
   void display() {
-    for (int i=0; i<19; i++) {
+    for (int i=0; i<20; i++) {
       if (i<6 || i>14) {
         fill(#0cb43c);
       } else {
