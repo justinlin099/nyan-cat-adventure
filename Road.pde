@@ -33,7 +33,12 @@ class Road extends Map {
 
   void display() {
     for (int i=0; i<20; i++) {
-      fill(#404040);
+      if (i<6 || i>14) {
+        fill(#303030);
+      } else {
+        fill(#404040);
+      }
+      
       landX=i*80+y*(-30);
       landY=i*20+y*60;
       quad(landX, landY, landX+80, landY+20, landX+110, landY-40, landX+30, landY-60);
