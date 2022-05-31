@@ -1,4 +1,4 @@
-PImage playerImg,nyan0,coinImg,nyandead;
+PImage playerImg,nyan0,coinImg,nyandead,gameOver,restart;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
@@ -14,6 +14,8 @@ final int GAME_START = 0, GAME_RUN = 1, GAME_OVER = 2;
 int gameState = 0;
 int coinCount=0;
 int hiScore=0;
+int hintTimer;
+float hintX,hintY;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
@@ -46,6 +48,8 @@ void setup() {
   playerImg=nyan0;
   logImg=loadImage("img/gutter-cover.png");
   coinImg=loadImage("img/coin.png");
+  gameOver=loadImage("img/gameOver.png");
+  restart=loadImage("img/restart.png");
   
 
   //loading Tree & Car Image
@@ -72,33 +76,34 @@ void draw() {
   pushMatrix();
   //Adjust Rolling Speed
   switch (gameState) {
-
-  case GAME_START:
-    if (tranX<-400) {
-      tranX=-400;
-      tranY=800;
-    }
-    if (tranX<0) {
-      for (int i=-400; i<=0; i=i+20) {
-        if (tranX<=i) {
-          tranX+=1;
-          tranY-=2;
+    
+    case GAME_START:
+      if (tranX<-400) {
+        tranX=-400;
+        tranY=800;
+      }
+      if (tranX<0) {
+        for (int i=-400; i<=0; i=i+20) {
+          if (tranX<=i) {
+            tranX+=1;
+            tranY-=2;
+          }
         }
       }
-    }
-    break;
-  case GAME_RUN:
-    for (int i=550; i>=0; i=i-25) {
-      if (tranY+player.y<=i) {
-        tranX-=0.125;
-        tranY+=0.25;
+      break;
+    case GAME_RUN:
+      for (int i=550; i>=0; i=i-25) {
+        if (tranY+player.y<=i) {
+          tranX-=0.125;
+          tranY+=0.25;
+        }
       }
-    }
-    tranX-=0.125;
-    tranY+=0.25;
-    break;
-  case GAME_OVER:
-    playerImg = nyandead;
+      tranX-=0.125;
+      tranY+=0.25;
+      break;
+    case GAME_OVER:
+      playerImg = nyandead;
+      break;
   }
 
 
@@ -130,7 +135,27 @@ void draw() {
 
   popMatrix();
 
+  switch (gameState) {
+    
+    
+    case GAME_OVER:
+      if(hintTimer>0){
+        hintTimer--;
+        //hintX+=4;
+        //hintY+=1;
+        for(int i=0;i<hintTimer;i++){
+          hintX+=(0.4*hintTimer/32);
+          hintY+=(0.1*hintTimer/32);
+        }
+      }
+      
+      drawImage(gameOver,hintX,hintY);
+      drawImage(restart,hintX,hintY+60);
+      break;
+  }
+
   //draw score
+
 
   drawScore();
 
@@ -138,6 +163,9 @@ void draw() {
   
   if(tranY+ player.y-720-60>0 && gameState==GAME_RUN){
     gameState=GAME_OVER;
+    hintTimer=60;
+    hintX=-400;
+    hintY=150;
   }
 }
 
