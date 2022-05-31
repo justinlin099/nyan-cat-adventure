@@ -31,7 +31,7 @@ class Truck extends Car{
 
   boolean checkCollision(Player player, int playerState) {
     if(playerState==PLAYER_UP||playerState==PLAYER_DOWN||playerState==PLAYER_IDLE){
-      if(isHit(player.offsetX , player.offsetY,1,1,x,y,2,1)){
+      if(isHit(player.offsetX+0.2 , player.offsetY,0.5,1,x,y,2,1)){
         return true;
       }
     }

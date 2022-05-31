@@ -9,7 +9,11 @@ class Car {
     this.speed=speed;
     carX=(x+6)*80+y*(-30);
     carY=(x+6)*20+y*60;
-    carImg=car[floor(random(4))];
+    if(speed<0){
+      carImg=car[floor(random(4))];
+    }else{
+      carImg=carR[floor(random(4))];
+    }
   }
 
   void display() {
@@ -38,7 +42,7 @@ class Car {
 
   boolean checkCollision(Player player, int playerState) {
     if(playerState==PLAYER_UP||playerState==PLAYER_DOWN||playerState==PLAYER_IDLE){
-      if(isHit(player.offsetX , player.offsetY,1,1,x,y,1,1)){
+      if(isHit(player.offsetX+0.2 , player.offsetY,0.5,1,x,y,1,1)){
         return true;
       }
     }

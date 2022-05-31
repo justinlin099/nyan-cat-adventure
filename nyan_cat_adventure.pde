@@ -1,6 +1,7 @@
-PImage playerImg,nyan0,coinImg;
+PImage playerImg,nyan0,coinImg,nyandead;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
+PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
 PImage logImg; //replace this with coin image
 int landX, landY;
@@ -41,6 +42,7 @@ void setup() {
   size(1280, 720, P2D);
   noStroke();
   nyan0 = loadImage("img/nyan0.png");
+  nyandead = loadImage("img/dead-nyan.png");
   playerImg=nyan0;
   logImg=loadImage("img/gutter-cover.png");
   coinImg=loadImage("img/coin.png");
@@ -50,6 +52,7 @@ void setup() {
   for (int i=0; i<4; i++) {
     tree[i] = loadImage("img/tree" + i + ".png") ;
     car[i] = loadImage("img/car" + i + ".png") ;
+    carR[i] = loadImage("img/car" + i + "_R.png");
   }
 
   for (int i=0; i<2; i++) {
@@ -95,7 +98,7 @@ void draw() {
     tranY+=0.25;
     break;
   case GAME_OVER:
-    playerImg = logImg;
+    playerImg = nyandead;
   }
 
 

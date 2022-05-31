@@ -15,9 +15,10 @@ import java.io.IOException;
 
 public class nyan_cat_adventure extends PApplet {
 
-PImage playerImg,nyan0,coinImg;
+PImage playerImg,nyan0,coinImg,nyandead;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
+PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
 PImage logImg; //replace this with coin image
 int landX, landY;
@@ -58,6 +59,7 @@ final int CAR=1;
   /* size commented out by preprocessor */;
   noStroke();
   nyan0 = loadImage("img/nyan0.png");
+  nyandead = loadImage("img/dead-nyan.png");
   playerImg=nyan0;
   logImg=loadImage("img/gutter-cover.png");
   coinImg=loadImage("img/coin.png");
@@ -67,6 +69,7 @@ final int CAR=1;
   for (int i=0; i<4; i++) {
     tree[i] = loadImage("img/tree" + i + ".png") ;
     car[i] = loadImage("img/car" + i + ".png") ;
+    carR[i] = loadImage("img/car" + i + "_R.png");
   }
 
   for (int i=0; i<2; i++) {
@@ -112,7 +115,7 @@ final int CAR=1;
     tranY+=0.25f;
     break;
   case GAME_OVER:
-    playerImg = logImg;
+    playerImg = nyandead;
   }
 
 
@@ -243,7 +246,11 @@ class Car {
     this.speed=speed;
     carX=(x+6)*80+y*(-30);
     carY=(x+6)*20+y*60;
-    carImg=car[floor(random(4))];
+    if(speed<0){
+      carImg=car[floor(random(4))];
+    }else{
+      carImg=carR[floor(random(4))];
+    }
   }
 
    public void display() {
@@ -272,7 +279,7 @@ class Car {
 
    public boolean checkCollision(Player player, int playerState) {
     if(playerState==PLAYER_UP||playerState==PLAYER_DOWN||playerState==PLAYER_IDLE){
-      if(isHit(player.offsetX , player.offsetY,1,1,x,y,1,1)){
+      if(isHit(player.offsetX+0.2f , player.offsetY,0.5f,1,x,y,1,1)){
         return true;
       }
     }
@@ -698,7 +705,7 @@ class Truck extends Car{
 
    public boolean checkCollision(Player player, int playerState) {
     if(playerState==PLAYER_UP||playerState==PLAYER_DOWN||playerState==PLAYER_IDLE){
-      if(isHit(player.offsetX , player.offsetY,1,1,x,y,2,1)){
+      if(isHit(player.offsetX+0.2f , player.offsetY,0.5f,1,x,y,2,1)){
         return true;
       }
     }
