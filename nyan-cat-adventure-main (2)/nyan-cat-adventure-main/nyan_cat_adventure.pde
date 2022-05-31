@@ -23,12 +23,6 @@ final int ROAD=1, GRASS=0;
 final int TREE=1;
 final int CAR=1;
 
-//sound import
-import ddf.minim.*;
-Minim minim; //minim func
-AudioPlayer song; //play the song
-boolean isPlaying;
-
 void initGame() {
   for (int i=0; i<maps.length; i++) {
     if (i<16) {
@@ -68,14 +62,6 @@ void setup() {
   for (int i=0; i<2; i++) {
     truck[i] = loadImage("img/truck" + i + ".png") ;
   }
-  
-  //music
-  minim = new Minim(this); //PApplet 
-  //load file
-  song = minim.loadFile("music/backgroundTest.mp3");
-  song.play();
-  song.loop();//continue playing the music
-  isPlaying = true;
 
 
 
@@ -116,7 +102,6 @@ void draw() {
       tranY+=0.25;
       break;
     case GAME_OVER:
-      musicStatus(); 
       playerImg = nyandead;
       break;
   }
@@ -162,7 +147,8 @@ void draw() {
           hintX+=(0.4*hintTimer/32);
           hintY+=(0.1*hintTimer/32);
         }
-      }     
+      }
+      
       drawImage(gameOver,hintX,hintY);
       drawImage(restart,hintX,hintY+60);
       break;
@@ -259,13 +245,4 @@ void keyPressed() {
       }
     }
   }
-}
-
-void musicStatus(){
-  if(isPlaying){
-    song.pause();
-  }else{
-    song.play();
-  }
-  isPlaying = !isPlaying;
 }
