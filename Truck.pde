@@ -37,8 +37,4 @@ class Truck extends Car{
     }
     return false;
   }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
