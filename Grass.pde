@@ -1,6 +1,7 @@
 class Grass extends Map {
   Tree[] trees;
   Coin coin;
+  Bomb bomb;
   Grass(int y) {
     super(y);
     type=GRASS;
@@ -23,8 +24,12 @@ class Grass extends Map {
     }
 
     //generate Coin
-    if (y%5==0) {
+    if (y%COIN_RATE==0) {
       coin=new Coin(3+floor(random(3)), y);
+    }
+    
+    if(y%BOMB_RATE==0){
+      bomb=new Bomb(3+floor(random(3)), y);
     }
   }
 
@@ -57,12 +62,15 @@ class Grass extends Map {
     for (int i=0; i<trees.length; i++) {
       trees[i].display();
     }
-    if (y%5==0) {
+    if (y%COIN_RATE==0) {
       coin.display();
-      if (coin.checkCollision(player, PLAYER_UP) && coin.isAlive) {
-        coinCount++;
-        coin.isAlive=false;
-      }
+      coin.checkCollision(player);
+        
+     
+    }
+    if (y%BOMB_RATE==0) {
+      bomb.display();
+      bomb.checkCollision(player);
     }
   }
 

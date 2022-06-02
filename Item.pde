@@ -1,17 +1,30 @@
 class Item {
   int x, y;
-  int coinX, coinY;
-  PImage logImg; //for permenent
+  int itemX, itemY;
+  float floatTimer;
+  boolean isAlive;
   Item(int x, int y) {
     this.x=x;
     this.y=y;
-    coinX=(x+6)*80+y*(-30);
-    coinY=(x+6)*20+y*60;
+    itemX=(x+6)*80+y*(-30);
+    itemY=(x+6)*20+y*60;
+    isAlive=true;
+    floatTimer=0;
   }
 
   void display() {
-    if ( maps[11].checkObjects(player.offsetX)!=TREE && maps[11].checkObjects(player.offsetX)!=CAR) {
-      drawImage(logImg, coinX, coinY); //change the log here
+    if (isAlive) {
+      drawImage(coinImg, itemX, itemY+5+sin(floatTimer)*10);
+      floatTimer+=TWO_PI/25;
     }
+  }
+
+  boolean checkCollision(Player player) {
+
+    if (isHit(player.offsetX, player.offsetY, 1, 1, x, y, 1, 1)) {
+      return true;
+    }
+
+    return false;
   }
 }
