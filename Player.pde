@@ -10,6 +10,8 @@ class Player {
     offsetY=8;
     movingTimer=0;
   }
+  
+
 
   void update() {
 
