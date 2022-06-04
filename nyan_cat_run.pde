@@ -5,7 +5,9 @@ class NyanCatRun{
 <<<<<<< Updated upstream
   
   NyanCatRun(){
+=======
   int time;
   
   NyanCatRun(){}
+>>>>>>> Stashed changes
 }
