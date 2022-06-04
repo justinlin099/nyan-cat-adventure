@@ -1,5 +1,7 @@
 class Grass extends Map {
   Tree[] trees;
+  Coin coin;
+  Bomb bomb;
   Grass(int y) {
     super(y);
     type=GRASS;
@@ -20,9 +22,19 @@ class Grass extends Map {
       }
       trees[i]=new Tree(newTreeX, y);
     }
+
+    //generate Coin
+    if (y%COIN_RATE==0) {
+      coin=new Coin(3+floor(random(3)), y);
+    }
+    
+    if(y%BOMB_RATE==0){
+      bomb=new Bomb(3+floor(random(3)), y);
+    }
   }
+
   void display() {
-    for (int i=0; i<19; i++) {
+    for (int i=0; i<20; i++) {
       if (i<6 || i>14) {
         fill(#0cb43c);
       } else {
@@ -30,7 +42,7 @@ class Grass extends Map {
       }
       landX=i*80+y*(-30);
       landY=i*20+y*60;
-      text(y, landX, landY);
+
       quad(landX, landY-5, landX+80, landY+20-5, landX+110, landY-40-5, landX+30, landY-60-5);
       if (i<6 || i>14) {
         fill(#0a9030);
@@ -49,6 +61,16 @@ class Grass extends Map {
   void displayObjects() {
     for (int i=0; i<trees.length; i++) {
       trees[i].display();
+    }
+    if (y%COIN_RATE==0) {
+      coin.display();
+      coin.checkCollision(player);
+        
+     
+    }
+    if (y%BOMB_RATE==0) {
+      bomb.display();
+      bomb.checkCollision(player);
     }
   }
 
