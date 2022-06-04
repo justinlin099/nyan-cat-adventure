@@ -36,7 +36,7 @@ int score() {
 }
 
 void drawScore() {
-  if(hiScore<score()){
+  if (hiScore<score()) {
     hiScore=score();
   }
   textSize(100);
@@ -45,12 +45,29 @@ void drawScore() {
   textSize(30);
   text("HI: "+ hiScore, 30, 150);
   if (debugMode) {
-      text(tranY, 30, 230);
-      text(player.y+ hiScore, 30, 260);
+    text(tranY, 30, 230);
+    text(player.y+ hiScore, 30, 260);
   }
-  
-  textSize(30);
-  fill(255,255,0);
-  text("Coin: "+coinCount, 30, 200);
 
+  textSize(30);
+  fill(255, 255, 0);
+  text("Coin: "+coinCount, 30, 200);
+}
+
+void drawSkinBar() {
+  textSize(30);
+  fill(255);
+  text("Avalible Skins", 30, height-120);
+  for (int i=0; i<3; i++) {
+    if (skinStatus[i]) {
+      tint(255);
+      image(nyanD[i], 30+120*i, height-100);
+    } else {
+      tint(128);
+      image(nyanD[i], 30+120*i, height-100);
+    }
+    textSize(20);
+    text(i,100+120*i,height-20);
+  }
+  tint(255);
 }

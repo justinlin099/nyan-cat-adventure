@@ -19,16 +19,16 @@ boolean isPlaying = true;
 //FONT
 PFont bit;
 
-PImage playerImg, nyan0, coinImg, nyandead, gameOver, restart, bombImg;
+PImage playerImg, nyan0, coinImg, nyandead, gameOver, gameStart, bombImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
-PImage[] nyanUP= new PImage[2];
-PImage[] nyanR= new PImage[2];
-PImage[] nyanL= new PImage[2];
-PImage[] nyanD= new PImage[2];
-PImage[] nyanDead= new PImage[2];
+PImage[] nyanUP= new PImage[3];
+PImage[] nyanR= new PImage[3];
+PImage[] nyanL= new PImage[3];
+PImage[] nyanD= new PImage[3];
+PImage[] nyanDead= new PImage[3];
 PImage logImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
@@ -44,6 +44,7 @@ int hintTimer, skin;
 float hintX, hintY;
 boolean bombMode=false;
 int bombTimer;
+boolean[] skinStatus=new boolean[3];
 
 
 //final Variables for item rate
@@ -72,7 +73,7 @@ void initGame() {
       }
     }
   }
-  skin=1;
+  skin=0;
   playerImg=nyanUP[skin];
 }
 
@@ -88,6 +89,7 @@ void setup() {
   coinImg=loadImage("img/coin.png");
   bombImg=loadImage("img/bomb.png");
   gameOver=loadImage("img/gameOver.png");
+  gameStart=loadImage("img/start.png");
   
   //music files loading
   minim = new Minim(this);
@@ -110,15 +112,15 @@ void setup() {
 
   
   //loading nyan Image
-  for (int i=0; i<2; i++) {
+  for (int i=0; i<3; i++) {
     nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
     nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
     nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
     nyanD[i]=loadImage("img/nyan" + i + "D.png") ;
     nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-    
+    skinStatus[i]=false;
   }
-
+  skinStatus[0]=true;
 
   //loading Tree & Car Image
   for (int i=0; i<4; i++) {
@@ -213,7 +215,10 @@ void draw() {
   popMatrix();
 
   switch (gameState) {
-
+  case GAME_START:  
+    drawSkinBar();
+    image(gameStart , 400,200);
+    break;
 
   case GAME_OVER:
     if (hintTimer>0) {
@@ -322,6 +327,39 @@ void keyPressed() {
         playerImg = nyanUP[skin];
         click.trigger();
         initGame();
+      }
+    }
+    if (key=='1') {
+      if(gameState==GAME_START && skinStatus[0]){
+        skin=0;
+        playerImg=nyanUP[skin];
+      }else if(gameState==GAME_START && !skinStatus[0] &&coinCount>=100){
+        coinCount-=100;
+        skin=0;
+        playerImg=nyanUP[skin];
+        skinStatus[0]=!skinStatus[0];
+      }
+    }
+    if (key=='2') {
+      if(gameState==GAME_START && skinStatus[1]){
+        skin=1;
+        playerImg=nyanUP[skin];
+      }else if(gameState==GAME_START && !skinStatus[1] &&coinCount>=100){
+        coinCount-=100;
+        skin=1;
+        playerImg=nyanUP[skin];
+        skinStatus[1]=!skinStatus[1];
+      }
+    }
+    if (key=='3') {
+      if(gameState==GAME_START && skinStatus[2]){
+        skin=2;
+        playerImg=nyanUP[skin];
+      }else if(gameState==GAME_START && !skinStatus[2] &&coinCount>=100){
+        coinCount-=100;
+        skin=2;
+        playerImg=nyanUP[skin];
+        skinStatus[2]=!skinStatus[2];
       }
     }
   }
