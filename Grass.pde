@@ -28,7 +28,7 @@ class Grass extends Map {
       coin=new Coin(3+floor(random(3)), y);
     }
     
-    if(y%BOMB_RATE==0){
+    if(y%BOMB_RATE==0 && y!=0){
       bomb=new Bomb(3+floor(random(3)), y);
     }
   }
@@ -68,7 +68,7 @@ class Grass extends Map {
         
      
     }
-    if (y%BOMB_RATE==0) {
+    if (y%BOMB_RATE==0 && y!=0) {
       bomb.display();
       bomb.checkCollision(player);
     }
