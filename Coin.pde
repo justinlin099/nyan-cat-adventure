@@ -23,7 +23,6 @@ class Coin {
   void checkCollision(Player player) {
     if (isHit(player.offsetX, player.offsetY, 1, 1, x, y, 1, 1)&& isAlive) {
       coinCount++;
-      eatMoney.trigger();
       isAlive=false;
     }
   }

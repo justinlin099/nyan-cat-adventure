@@ -17,7 +17,6 @@ class Car {
       carImg=carR[floor(random(4))];
     }
     floatTimer=0;
-  
   }
 
   void display() {
@@ -62,4 +61,3 @@ class Car {
     return false;
   }
 }
- 

@@ -25,7 +25,6 @@ class Bomb {
     if (isHit(player.offsetX, player.offsetY, 1, 1, x, y, 1, 1)&& isAlive) {
       bombMode=true;
       bombTimer=300;
-      bomb.trigger();
       isAlive=false;
     }
     

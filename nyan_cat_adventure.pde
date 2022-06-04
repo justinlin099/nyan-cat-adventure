@@ -1,20 +1,20 @@
 //music part
 import  ddf.minim.*;
 Minim minim;
-AudioSample bomb;//ok
+AudioSample bomb;
 AudioSample carAccident;
 AudioPlayer carSound;//ok
 AudioSample gameover;
 AudioSample click;//ok
 AudioSample drop;
-AudioSample eatMoney;//ok,but the bomb mode money part wont display the sound
+AudioSample eatMoney;
 AudioSample jump;//ok
 AudioSample magnet;
 AudioSample nyna;
 AudioSample river;
 //AudioSample win;
 //AudioSample wood;
-//boolean isPlaying = true; //use it if needed
+boolean isPlaying = true;
 
 
 PImage playerImg, nyan0, coinImg, nyandead, gameOver, restart, bombImg;
