@@ -51,6 +51,6 @@ void drawScore() {
   
   textSize(30);
   fill(255,255,0);
-  text(coinCount, 30, 200);
+  text("Coin: "+coinCount, 30, 200);
 
 }
