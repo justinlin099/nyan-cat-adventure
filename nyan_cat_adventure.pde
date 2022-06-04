@@ -19,7 +19,7 @@ boolean isPlaying = true;
 //FONT
 PFont bit;
 
-PImage playerImg, nyan0, coinImg, nyandead, gameOver, gameStart, bombImg;
+PImage playerImg, nyan0, coinImg, nyandead, gameOver, gameStart, bombImg,rainbow;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
@@ -94,6 +94,7 @@ void setup() {
   gameOver=loadImage("img/gameOver.png");
   gameStart=loadImage("img/start.png");
   flatCoinImg=loadImage("img/flatCoin.png");
+  rainbow=loadImage("img/Rainbow.png");
 
   //music files loading
   minim = new Minim(this);

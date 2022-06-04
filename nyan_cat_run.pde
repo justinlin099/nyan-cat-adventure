@@ -1,6 +1,7 @@
 class NyanCatRun {
   int nyanX, nyanY;
   FlatCoin[] coins=new FlatCoin[11];
+  Rainbow[] rainbows=new Rainbow[25];
   int timer;
   int time;
   int nyanIndex;
@@ -13,6 +14,9 @@ class NyanCatRun {
     nyanIndex=0;
     for (int i=0; i<11; i++) {
       coins[i]=new FlatCoin(width-120*i,60+120*int(random(5)));
+    }
+    for (int i=0; i<25; i++) {
+      rainbows[i]=new Rainbow(nyanX+40-10*i,nyanY-20);
     }
   }
 
@@ -32,6 +36,14 @@ class NyanCatRun {
         coins[i]=new FlatCoin(width,60+120*int(random(5)));
       }
       coins[i].checkCollision();
+    }
+    
+    for (int i=0; i<25; i++) {
+      rainbows[i].display();
+      rainbows[i].x-=10;
+      if(rainbows[i].x+100<=10){
+        rainbows[i]=new Rainbow(nyanX+40,nyanY-20);
+      }
     }
     
     image(nyanRun[nyanIndex], nyanX, nyanY);
