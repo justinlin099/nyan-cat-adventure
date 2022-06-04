@@ -16,3 +16,22 @@ class Tree {
     drawImage(treeImg, treeX, treeY);
   }
 }
+/*
+//generate coin
+coins=new Coin[floor(random(5))];
+int newCoinX;
+for (int i=0; i<coins.length; i++) {
+  if (floor(random(2))==0) {
+    newCoinX=floor(random(3));
+    while (checkCoinXreuse(newCoinX, i)) {
+      newCoinX=6+floor(random(3));
+    }
+  } else {
+    newCoinX=6+floor(random(3));
+    while (checkCoinXreuse(newCoinX, i)) {
+      newCoinX=floor(random(3));
+    }
+  }
+  coins[i]=new Coin(newCoinX, y);
+}
+*/

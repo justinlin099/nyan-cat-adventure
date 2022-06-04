@@ -1,34 +1,31 @@
-//music part
+ //music part
 import  ddf.minim.*;
 Minim minim;
-AudioSample bomb;
+AudioSample bomb;//ok
 AudioSample carAccident;
 AudioPlayer carSound;//ok
 AudioSample gameover;
 AudioSample click;//ok
 AudioSample drop;
-AudioSample eatMoney;
+AudioSample eatMoney;//ok,but the bomb mode money part wont display the sound
 AudioSample jump;//ok
 AudioSample magnet;
 AudioSample nyna;
 AudioSample river;
-//AudioSample win;
-//AudioSample wood;
+AudioSample win;
+AudioSample wood;
 boolean isPlaying = true;
-
-//font
-PFont bit;
+//boolean isPlaying = true; //use it if needed
 
 PImage playerImg, nyan0, coinImg, nyandead, gameOver, restart, bombImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
-PImage[] nyanUP= new PImage[3];
-PImage[] nyanR= new PImage[3];
-PImage[] nyanL= new PImage[3];
-PImage[] nyanD= new PImage[3];
-PImage[] nyanDead= new PImage[3];
+PImage[] nyanUP= new PImage[2];
+PImage[] nyanR= new PImage[2];
+PImage[] nyanL= new PImage[2];
+PImage[] nyanDead= new PImage[2];
 PImage logImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
@@ -44,7 +41,6 @@ int hintTimer, skin;
 float hintX, hintY;
 boolean bombMode=false;
 int bombTimer;
-
 
 //final Variables for item rate
 final int BOMB_RATE=36;
@@ -133,6 +129,70 @@ void setup() {
 
 
 
+void initGame() {
+  for (int i=0; i<maps.length; i++) {
+    if (i<16) {
+      maps[i]=new Grass(20-i);
+    } else {
+      switch(floor(random(2))) {
+      case 0:
+        maps[i]=new Grass(20-i);
+        break;
+      case 1:
+        maps[i]=new Road(20-i);
+        break;
+      }
+    }
+  }
+  skin=1;
+  playerImg=nyanUP[skin];
+}
+
+void setup() {
+  size(1280, 720, P2D);
+  noStroke();
+  logImg=loadImage("img/gutter-cover.png");
+  coinImg=loadImage("img/coin.png");
+  bombImg=loadImage("img/bomb.png");
+  gameOver=loadImage("img/gameOver.png");
+
+  //loading nyan Image
+  for (int i=0; i<2; i++) {
+    nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
+    nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
+    nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
+    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
+  }
+
+
+  //loading Tree & Car Image
+  for (int i=0; i<4; i++) {
+    tree[i] = loadImage("img/tree" + i + ".png") ;
+    car[i] = loadImage("img/car" + i + ".png") ;
+    carR[i] = loadImage("img/car" + i + "_R.png");
+  }
+
+  for (int i=0; i<2; i++) {
+    truck[i] = loadImage("img/truck" + i + ".png") ;
+  }
+  
+  //music
+  minim = new Minim(this);
+  bomb = minim.loadSample("music/bomb.mp3");
+  carAccident = minim.loadSample("music/car accident.mp3");
+  carSound = minim.loadFile("music/car.mp3");
+  click = minim.loadSample("music/click.mp3");
+  drop = minim.loadSample("music/drop.mp3");
+  eatMoney = minim.loadSample("music/eat money.mp3");
+  jump = minim.loadSample("music/jump.mp3");
+  magnet = minim.loadSample("music/magnet.mp3");
+  nyna = minim.loadSample("music/nyna.mp3");
+  river = minim.loadSample("music/river.mp3");
+  win = minim.loadSample("music/win.mp3");
+  wood = minim.loadSample("music/wood.mp3");
+  carSound.loop();
+
+
   initGame();
 
   player = new Player();
@@ -178,6 +238,11 @@ void draw() {
   if (bombMode) {
     bombTimer-=1;
     if (bombTimer<0) {
+  
+  //bombTimer
+  if(bombMode){
+    bombTimer-=1;
+    if(bombTimer<0){
       bombMode=false;
     }
   }
@@ -224,6 +289,7 @@ void draw() {
         hintY+=(0.1*hintTimer/32);
       }
     }
+
     drawImage(gameOver, hintX-80, hintY);
     break;
   }
@@ -312,6 +378,7 @@ void keyPressed() {
     }
     if (key==ENTER) {
       if (gameState==GAME_OVER) {
+        click.trigger();
         gameState=GAME_START;
         player.x=560;
         player.y=680;
