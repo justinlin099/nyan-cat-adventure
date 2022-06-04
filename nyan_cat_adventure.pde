@@ -30,7 +30,7 @@ PImage[] nyanL= new PImage[3];
 PImage[] nyanD= new PImage[3];
 PImage[] nyanDead= new PImage[3];
 PImage[] nyanRun=new PImage[5];
-PImage cookieImg; //replace this with coin image
+PImage cookieImg,flatCoinImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
 Player player;
@@ -93,6 +93,7 @@ void setup() {
   bombImg=loadImage("img/bomb.png");
   gameOver=loadImage("img/gameOver.png");
   gameStart=loadImage("img/start.png");
+  flatCoinImg=loadImage("img/flatCoin.png");
 
   //music files loading
   minim = new Minim(this);
