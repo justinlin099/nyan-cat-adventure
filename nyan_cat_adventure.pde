@@ -1,11 +1,37 @@
+//music part
+import  ddf.minim.*;
+Minim minim;
+AudioSample bomb;
+AudioSample carAccident;
+AudioPlayer carSound;//ok
+AudioSample gameover;
+AudioSample click;//ok
+AudioSample drop;
+AudioSample eatMoney;
+AudioSample jump;//ok
+AudioSample magnet;
+AudioSample nyna;
+AudioSample river;
+//AudioSample win;
+//AudioSample wood;
+boolean isPlaying = true;
+
+
 PImage playerImg, nyan0, coinImg, nyandead, gameOver, restart, bombImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
 PImage[] nyanUP= new PImage[2];
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
+=======
+
+>>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
 PImage[] nyanR= new PImage[2];
 PImage[] nyanL= new PImage[2];
+>>>>>>> Stashed changes
 PImage[] nyanDead= new PImage[2];
 PImage logImg; //replace this with coin image
 int landX, landY;
@@ -23,6 +49,7 @@ float hintX, hintY;
 boolean bombMode=false;
 int bombTimer;
 
+
 //final Variables for item rate
 final int BOMB_RATE=36;
 final int COIN_RATE=5;
@@ -33,11 +60,6 @@ final int ROAD=1, GRASS=0;
 final int TREE=1;
 final int CAR=1;
 
-//sound import
-import ddf.minim.*;
-Minim minim; //minim func
-AudioPlayer song; //play the song
-boolean isPlaying;
 
 void initGame() {
   for (int i=0; i<maps.length; i++) {
@@ -58,6 +80,7 @@ void initGame() {
   playerImg=nyanUP[skin];
 }
 
+
 void setup() {
   size(1280, 720, P2D);
   noStroke();
@@ -65,13 +88,48 @@ void setup() {
   coinImg=loadImage("img/coin.png");
   bombImg=loadImage("img/bomb.png");
   gameOver=loadImage("img/gameOver.png");
+  
+  //music files loading
+  minim = new Minim(this);
+  bomb = minim.loadSample("music/bomb.mp3");
+  carAccident = minim.loadSample("music/car accident.mp3");
+  carSound = minim.loadFile("music/car.mp3");
+  gameover = minim.loadSample("music/gameover.mp3");
+  click = minim.loadSample("music/click.mp3");
+  drop = minim.loadSample("music/drop.mp3");
+  eatMoney = minim.loadSample("music/eat money.mp3");
+  jump = minim.loadSample("music/jump.mp3");
+  magnet = minim.loadSample("music/magnet.mp3");
+  nyna = minim.loadSample("music/nyna.mp3");
+  river = minim.loadSample("music/river.mp3");
+//  win = minim.loadSample("music/win.mp3");
+//  wood = minim.loadSample("music/wood.mp3");
+  carSound.loop();
 
+
+
+  
   //loading nyan Image
   for (int i=0; i<2; i++) {
     nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
+=======
+=======
+
+    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
+
+>>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
     nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
     nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
     nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
+    
+<<<<<<< HEAD
+>>>>>>> Stashed changes
+=======
+
+>>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
   }
 
 
@@ -85,14 +143,6 @@ void setup() {
   for (int i=0; i<2; i++) {
     truck[i] = loadImage("img/truck" + i + ".png") ;
   }
-  
-  //music
-  minim = new Minim(this); //PApplet 
-  //load file
-  song = minim.loadFile("music/backgroundTest.mp3");
-  song.play();
-  song.loop();//continue playing the music
-  isPlaying = true;
 
 
 
@@ -108,7 +158,7 @@ void draw() {
   //Adjust Rolling Speed
   switch (gameState) {
 
-  case GAME_START:
+  case GAME_START:  
     if (tranX<-400) {
       tranX=-400;
       tranY=800;
@@ -187,7 +237,6 @@ void draw() {
         hintY+=(0.1*hintTimer/32);
       }
     }
-
     drawImage(gameOver, hintX-80, hintY);
     break;
   }
@@ -217,6 +266,7 @@ void keyPressed() {
       }
       if (gameState==GAME_RUN && playerState==PLAYER_IDLE && maps[13].checkObjects(player.offsetX)!=TREE) {
         playerState=PLAYER_UP;
+        jump.trigger();
         player.movingTimer=0;
         player.offsetY--;
         //offset map forward and create new map
@@ -241,6 +291,7 @@ void keyPressed() {
     case RIGHT:
       if (gameState==GAME_RUN && playerState==PLAYER_IDLE && player.offsetX<8 && maps[12].checkObjects(player.offsetX+1)!=TREE) {
         playerState=PLAYER_RIGHT;
+        jump.trigger();
         player.movingTimer=0;
         player.offsetX++;
       }
@@ -248,6 +299,7 @@ void keyPressed() {
     case LEFT:
       if (gameState==GAME_RUN && playerState==PLAYER_IDLE && player.offsetX>0 && maps[12].checkObjects(player.offsetX-1)!=TREE) {
         playerState=PLAYER_LEFT;
+        jump.trigger();
         player.movingTimer=0;
         player.offsetX--;
       }
@@ -255,6 +307,7 @@ void keyPressed() {
     case DOWN:
       if (gameState==GAME_RUN && playerState==PLAYER_IDLE && maps[11].checkObjects(player.offsetX)!=TREE) {
         playerState=PLAYER_DOWN;
+        jump.trigger();
         player.movingTimer=0;
         player.offsetY++;
 
@@ -279,17 +332,9 @@ void keyPressed() {
         player.offsetY=8;
         player.movingTimer=0;
         playerImg = nyanUP[skin];
+        click.trigger();
         initGame();
       }
     }
   }
-}
-
-void musicStatus(){
-  if(isPlaying){
-    song.pause();
-  }else{
-    song.play();
-  }
-  isPlaying = !isPlaying;
 }
