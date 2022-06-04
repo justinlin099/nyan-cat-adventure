@@ -72,9 +72,6 @@ void setup() {
   //loading nyan Image
   for (int i=0; i<2; i++) {
     nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
-<<<<<<< Updated upstream
-    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-=======
     nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
     nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
     nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
