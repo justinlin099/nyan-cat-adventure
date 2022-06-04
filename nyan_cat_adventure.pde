@@ -23,8 +23,12 @@ PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
 PImage[] nyanUP= new PImage[2];
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+
+>>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
 PImage[] nyanR= new PImage[2];
 PImage[] nyanL= new PImage[2];
 >>>>>>> Stashed changes
@@ -108,14 +112,24 @@ void setup() {
   //loading nyan Image
   for (int i=0; i<2; i++) {
     nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
 =======
+=======
+
+    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
+
+>>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
     nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
     nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
     nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
     
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
   }
 
 
