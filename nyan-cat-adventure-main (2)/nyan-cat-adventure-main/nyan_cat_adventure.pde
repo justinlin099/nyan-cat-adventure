@@ -1,10 +1,8 @@
-PImage playerImg, nyan0, coinImg, nyandead, gameOver, restart, bombImg;
+PImage playerImg,nyan0,coinImg,nyandead,gameOver,restart;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
-PImage[] nyanUP= new PImage[2];
-PImage[] nyanDead= new PImage[2];
 PImage logImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
@@ -16,26 +14,14 @@ final int GAME_START = 0, GAME_RUN = 1, GAME_OVER = 2;
 int gameState = 0;
 int coinCount=0;
 int hiScore=0;
-int hintTimer, skin;
-float hintX, hintY;
-boolean bombMode=false;
-int bombTimer;
-
-//final Variables for item rate
-final int BOMB_RATE=36;
-final int COIN_RATE=5;
+int hintTimer;
+float hintX,hintY;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
 final int ROAD=1, GRASS=0;
 final int TREE=1;
 final int CAR=1;
-
-//sound import
-import ddf.minim.*;
-Minim minim; //minim func
-AudioPlayer song; //play the song
-boolean isPlaying;
 
 void initGame() {
   for (int i=0; i<maps.length; i++) {
@@ -52,24 +38,19 @@ void initGame() {
       }
     }
   }
-  skin=1;
-  playerImg=nyanUP[skin];
 }
 
 void setup() {
   size(1280, 720, P2D);
   noStroke();
+  nyan0 = loadImage("img/nyan0.png");
+  nyandead = loadImage("img/dead-nyan.png");
+  playerImg=nyan0;
   logImg=loadImage("img/gutter-cover.png");
   coinImg=loadImage("img/coin.png");
-  bombImg=loadImage("img/bomb.png");
   gameOver=loadImage("img/gameOver.png");
-
-  //loading nyan Image
-  for (int i=0; i<2; i++) {
-    nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
-    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-  }
-
+  restart=loadImage("img/restart.png");
+  
 
   //loading Tree & Car Image
   for (int i=0; i<4; i++) {
@@ -81,14 +62,6 @@ void setup() {
   for (int i=0; i<2; i++) {
     truck[i] = loadImage("img/truck" + i + ".png") ;
   }
-  
-  //music
-  minim = new Minim(this); //PApplet 
-  //load file
-  song = minim.loadFile("music/backgroundTest.mp3");
-  song.play();
-  song.loop();//continue playing the music
-  isPlaying = true;
 
 
 
@@ -103,43 +76,34 @@ void draw() {
   pushMatrix();
   //Adjust Rolling Speed
   switch (gameState) {
-
-  case GAME_START:
-    if (tranX<-400) {
-      tranX=-400;
-      tranY=800;
-    }
-    if (tranX<0) {
-      for (int i=-400; i<=0; i=i+20) {
-        if (tranX<=i) {
-          tranX+=1;
-          tranY-=2;
+    
+    case GAME_START:
+      if (tranX<-400) {
+        tranX=-400;
+        tranY=800;
+      }
+      if (tranX<0) {
+        for (int i=-400; i<=0; i=i+20) {
+          if (tranX<=i) {
+            tranX+=1;
+            tranY-=2;
+          }
         }
       }
-    }
-    break;
-  case GAME_RUN:
-    for (int i=550; i>=0; i=i-25) {
-      if (tranY+player.y<=i) {
-        tranX-=0.125;
-        tranY+=0.25;
+      break;
+    case GAME_RUN:
+      for (int i=550; i>=0; i=i-25) {
+        if (tranY+player.y<=i) {
+          tranX-=0.125;
+          tranY+=0.25;
+        }
       }
-    }
-    tranX-=0.125;
-    tranY+=0.25;
-    break;
-  case GAME_OVER:
-    musicStatus(); 
-    playerImg = nyanDead[skin];
-    break;
-  }
-  
-  //bombTimer
-  if(bombMode){
-    bombTimer-=1;
-    if(bombTimer<0){
-      bombMode=false;
-    }
+      tranX-=0.125;
+      tranY+=0.25;
+      break;
+    case GAME_OVER:
+      playerImg = nyandead;
+      break;
   }
 
 
@@ -172,21 +136,22 @@ void draw() {
   popMatrix();
 
   switch (gameState) {
-
-
-  case GAME_OVER:
-    if (hintTimer>0) {
-      hintTimer--;
-      //hintX+=4;
-      //hintY+=1;
-      for (int i=0; i<hintTimer; i++) {
-        hintX+=(0.4*hintTimer/32);
-        hintY+=(0.1*hintTimer/32);
+    
+    
+    case GAME_OVER:
+      if(hintTimer>0){
+        hintTimer--;
+        //hintX+=4;
+        //hintY+=1;
+        for(int i=0;i<hintTimer;i++){
+          hintX+=(0.4*hintTimer/32);
+          hintY+=(0.1*hintTimer/32);
+        }
       }
-    }
-
-    drawImage(gameOver, hintX-80, hintY);
-    break;
+      
+      drawImage(gameOver,hintX,hintY);
+      drawImage(restart,hintX,hintY+60);
+      break;
   }
 
   //draw score
@@ -195,8 +160,8 @@ void draw() {
   drawScore();
 
   //detect if cat is out of the screen
-
-  if (tranY+ player.y-720-60>0 && gameState==GAME_RUN) {
+  
+  if(tranY+ player.y-720-60>0 && gameState==GAME_RUN){
     gameState=GAME_OVER;
     hintTimer=60;
     hintX=-400;
@@ -233,7 +198,7 @@ void keyPressed() {
         }
       }
 
-
+      
       break;
     case RIGHT:
       if (gameState==GAME_RUN && playerState==PLAYER_IDLE && player.offsetX<8 && maps[12].checkObjects(player.offsetX+1)!=TREE) {
@@ -267,7 +232,7 @@ void keyPressed() {
       // Press B to toggle demo mode
       debugMode = !debugMode;
     }
-    if (key==ENTER) {
+    if (key==ENTER){
       if (gameState==GAME_OVER) {
         gameState=GAME_START;
         player.x=560;
@@ -275,18 +240,9 @@ void keyPressed() {
         player.offsetX=4;
         player.offsetY=8;
         player.movingTimer=0;
-        playerImg = nyanUP[skin];
+        playerImg = loadImage("img/nyan0.png");
         initGame();
       }
     }
   }
-}
-
-void musicStatus(){
-  if(isPlaying){
-    song.pause();
-  }else{
-    song.play();
-  }
-  isPlaying = !isPlaying;
 }
