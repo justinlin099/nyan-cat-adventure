@@ -32,6 +32,7 @@ PImage[] nyanDead= new PImage[3];
 PImage[] nyanRun=new PImage[5];
 PImage cookieImg,flatCoinImg; //replace this with coin image
 int landX, landY;
+float speedRate;
 float tranX=0, tranY=0;
 Player player;
 int playerState;
@@ -52,7 +53,7 @@ NyanCatRun nyan;
 //final Variables for item rate
 final int BOMB_RATE=36;
 final int COIN_RATE=5;
-final int COOKIE_RATE=7;
+final int COOKIE_RATE=70;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
@@ -62,6 +63,7 @@ final int CAR=1;
 
 
 void initGame() {
+  speedRate=1;
   for (int i=0; i<maps.length; i++) {
     if (i<16) {
       maps[i]=new Grass(20-i);
@@ -78,6 +80,7 @@ void initGame() {
   }
   skin=0;
   playerImg=nyanUP[skin];
+  speedRate=1;
 }
 
 
@@ -151,7 +154,10 @@ void setup() {
 
 
 void draw() {
-
+  
+  //update carspeed
+  speedRate=1+floor(score()/50)*0.25;
+  
   pushMatrix();
   //Adjust Rolling Speed
   switch (gameState) {

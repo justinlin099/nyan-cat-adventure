@@ -9,7 +9,7 @@ class Road extends Map {
       cars=new Car[2];
       int space=floor(random(4, 16));
       float speed;
-      speed=-random(0.4, 1);
+      speed=-random(0.4, 1)*speedRate;
 
       int newCarX=floor(random(-6, -3));
       cars[0]=new Truck(newCarX, y, speed);
@@ -19,9 +19,9 @@ class Road extends Map {
       int space=floor(random(4, 12));
       float speed;
       if (floor(random(2))==0) {
-        speed=random(0.2, 1);
+        speed=random(0.2, 1)*speedRate;
       } else {
-        speed=-random(0.2, 1);
+        speed=-random(0.2, 1)*speedRate;
       }
       int newCarX=floor(random(-6, -3));
       cars[0]=new Car(newCarX, y, speed);

@@ -54,6 +54,7 @@ void drawScore() {
   text("Coin: "+coinCount, 30, 200);
 }
 
+
 void drawSkinBar() {
   textSize(30);
   fill(255);
