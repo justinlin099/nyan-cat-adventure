@@ -133,7 +133,6 @@ void draw() {
     tranY+=0.25;
     break;
   case GAME_OVER:
-    musicStatus(); 
     playerImg = nyanDead[skin];
     break;
   }
