@@ -2,6 +2,7 @@ class Grass extends Map {
   Tree[] trees;
   Coin coin;
   Bomb bomb;
+  Cookie cookie;
   Grass(int y) {
     super(y);
     type=GRASS;
@@ -28,8 +29,12 @@ class Grass extends Map {
       coin=new Coin(3+floor(random(3)), y);
     }
     
-    if(y%BOMB_RATE==0){
+    if(y%BOMB_RATE==0 && y!=0){
       bomb=new Bomb(3+floor(random(3)), y);
+    }
+    
+    if(y%COOKIE_RATE==0 && y!=0){
+      cookie=new Cookie(3+floor(random(3)), y);
     }
   }
 
@@ -68,9 +73,14 @@ class Grass extends Map {
         
      
     }
-    if (y%BOMB_RATE==0) {
+    if (y%BOMB_RATE==0 && y!=0) {
       bomb.display();
       bomb.checkCollision(player);
+    }
+    
+    if (y%COOKIE_RATE==0 && y!=0) {
+      cookie.display();
+      cookie.checkCollision(player);
     }
   }
 

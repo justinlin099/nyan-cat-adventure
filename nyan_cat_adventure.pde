@@ -10,37 +10,34 @@ AudioSample drop;
 AudioSample eatMoney;
 AudioSample jump;//ok
 AudioSample magnet;
-AudioSample nyna;
+AudioPlayer nyna;
 AudioSample river;
 //AudioSample win;
 //AudioSample wood;
 boolean isPlaying = true;
 
+//FONT
+PFont bit;
 
-PImage playerImg, nyan0, coinImg, nyandead, gameOver, restart, bombImg;
+PImage playerImg, nyan0, coinImg, nyandead, gameOver, gameStart, bombImg,rainbow;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
-PImage[] nyanUP= new PImage[2];
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
-
->>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
-PImage[] nyanR= new PImage[2];
-PImage[] nyanL= new PImage[2];
->>>>>>> Stashed changes
-PImage[] nyanDead= new PImage[2];
-PImage logImg; //replace this with coin image
+PImage[] nyanUP= new PImage[3];
+PImage[] nyanR= new PImage[3];
+PImage[] nyanL= new PImage[3];
+PImage[] nyanD= new PImage[3];
+PImage[] nyanDead= new PImage[3];
+PImage[] nyanRun=new PImage[5];
+PImage cookieImg,flatCoinImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
 Player player;
 int playerState;
 final int PLAYER_IDLE=0, PLAYER_UP=1, PLAYER_DOWN=2, PLAYER_RIGHT=3, PLAYER_LEFT=4;
 final int CAT_PADX=30;
-final int GAME_START = 0, GAME_RUN = 1, GAME_OVER = 2;
+final int GAME_START = 0, GAME_RUN = 1, GAME_OVER = 2, NYAN_MODE=3;
 int gameState = 0;
 int coinCount=0;
 int hiScore=0;
@@ -48,11 +45,14 @@ int hintTimer, skin;
 float hintX, hintY;
 boolean bombMode=false;
 int bombTimer;
+boolean[] skinStatus=new boolean[3];
+NyanCatRun nyan;
 
 
 //final Variables for item rate
 final int BOMB_RATE=36;
 final int COIN_RATE=5;
+final int COOKIE_RATE=7;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
@@ -76,7 +76,7 @@ void initGame() {
       }
     }
   }
-  skin=1;
+  skin=0;
   playerImg=nyanUP[skin];
 }
 
@@ -84,11 +84,18 @@ void initGame() {
 void setup() {
   size(1280, 720, P2D);
   noStroke();
-  logImg=loadImage("img/gutter-cover.png");
+  bit = createFont("8-BIT WONDER.TTF", 100);
+  background(0);
+  textFont(bit);
+  text("Loading", width/2-300, height/2);
+  cookieImg=loadImage("img/cookie.png");
   coinImg=loadImage("img/coin.png");
   bombImg=loadImage("img/bomb.png");
   gameOver=loadImage("img/gameOver.png");
-  
+  gameStart=loadImage("img/start.png");
+  flatCoinImg=loadImage("img/flatCoin.png");
+  rainbow=loadImage("img/Rainbow.png");
+
   //music files loading
   minim = new Minim(this);
   bomb = minim.loadSample("music/bomb.mp3");
@@ -100,44 +107,35 @@ void setup() {
   eatMoney = minim.loadSample("music/eat money.mp3");
   jump = minim.loadSample("music/jump.mp3");
   magnet = minim.loadSample("music/magnet.mp3");
-  nyna = minim.loadSample("music/nyna.mp3");
+  nyna = minim.loadFile("music/nyna.mp3");
   river = minim.loadSample("music/river.mp3");
-//  win = minim.loadSample("music/win.mp3");
-//  wood = minim.loadSample("music/wood.mp3");
+  //  win = minim.loadSample("music/win.mp3");
+  //  wood = minim.loadSample("music/wood.mp3");
   carSound.loop();
 
 
 
-  
+
   //loading nyan Image
-  for (int i=0; i<2; i++) {
+  for (int i=0; i<3; i++) {
     nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-=======
-=======
-
-    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-
->>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
     nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
     nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
+    nyanD[i]=loadImage("img/nyan" + i + "D.png") ;
     nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-    
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
-
->>>>>>> parent of 44d5c8e (Merge remote-tracking branch 'upstream/main')
+    skinStatus[i]=false;
   }
-
+  skinStatus[0]=true;
 
   //loading Tree & Car Image
   for (int i=0; i<4; i++) {
     tree[i] = loadImage("img/tree" + i + ".png") ;
     car[i] = loadImage("img/car" + i + ".png") ;
     carR[i] = loadImage("img/car" + i + "_R.png");
+  }
+  
+  for (int i=0; i<5; i++) {
+    nyanRun[i]=loadImage("img/nyanRun" + i + ".png") ;
   }
 
   for (int i=0; i<2; i++) {
@@ -158,7 +156,7 @@ void draw() {
   //Adjust Rolling Speed
   switch (gameState) {
 
-  case GAME_START:  
+  case GAME_START:
     if (tranX<-400) {
       tranX=-400;
       tranY=800;
@@ -183,15 +181,15 @@ void draw() {
     tranY+=0.25;
     break;
   case GAME_OVER:
-    musicStatus(); 
+
     playerImg = nyanDead[skin];
     break;
   }
-  
+
   //bombTimer
-  if(bombMode){
+  if (bombMode) {
     bombTimer-=1;
-    if(bombTimer<0){
+    if (bombTimer<0) {
       bombMode=false;
     }
   }
@@ -226,7 +224,10 @@ void draw() {
   popMatrix();
 
   switch (gameState) {
-
+  case GAME_START:
+    drawSkinBar();
+    image(gameStart, 400, 200);
+    break;
 
   case GAME_OVER:
     if (hintTimer>0) {
@@ -239,6 +240,10 @@ void draw() {
       }
     }
     drawImage(gameOver, hintX-80, hintY);
+    break;
+
+  case NYAN_MODE:
+    nyan.display();
     break;
   }
 
@@ -335,6 +340,39 @@ void keyPressed() {
         playerImg = nyanUP[skin];
         click.trigger();
         initGame();
+      }
+    }
+    if (key=='1') {
+      if (gameState==GAME_START && skinStatus[0]) {
+        skin=0;
+        playerImg=nyanUP[skin];
+      } else if (gameState==GAME_START && !skinStatus[0] &&coinCount>=100) {
+        coinCount-=100;
+        skin=0;
+        playerImg=nyanUP[skin];
+        skinStatus[0]=!skinStatus[0];
+      }
+    }
+    if (key=='2') {
+      if (gameState==GAME_START && skinStatus[1]) {
+        skin=1;
+        playerImg=nyanUP[skin];
+      } else if (gameState==GAME_START && !skinStatus[1] &&coinCount>=100) {
+        coinCount-=100;
+        skin=1;
+        playerImg=nyanUP[skin];
+        skinStatus[1]=!skinStatus[1];
+      }
+    }
+    if (key=='3') {
+      if (gameState==GAME_START && skinStatus[2]) {
+        skin=2;
+        playerImg=nyanUP[skin];
+      } else if (gameState==GAME_START && !skinStatus[2] &&coinCount>=100) {
+        coinCount-=100;
+        skin=2;
+        playerImg=nyanUP[skin];
+        skinStatus[2]=!skinStatus[2];
       }
     }
   }
