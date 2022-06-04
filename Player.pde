@@ -28,6 +28,7 @@ class Player {
       x+=3;
       y-=6;
       drawImage(playerImg, x, y-10);
+      playerImg=nyanUP[skin];
       break;
     case PLAYER_DOWN:
       movingTimer+=1;
@@ -40,12 +41,14 @@ class Player {
       x-=8;
       y-=2;
       drawImage(playerImg, x, y-10);
+      playerImg=nyanL[skin];
       break;
     case PLAYER_RIGHT:
       movingTimer+=1;
       x+=8;
       y+=2;
       drawImage(playerImg, x, y-10);
+      playerImg=nyanR[skin];
       break;
     }
 
