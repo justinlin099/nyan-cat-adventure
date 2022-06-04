@@ -35,6 +35,7 @@ class Player {
       x-=3;
       y+=6;
       drawImage(playerImg, x, y-10);
+      playerImg=nyanD[skin];
       break;
     case PLAYER_LEFT:
       movingTimer+=1;

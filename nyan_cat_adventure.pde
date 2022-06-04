@@ -16,16 +16,19 @@ AudioSample river;
 //AudioSample wood;
 boolean isPlaying = true;
 
+//font
+PFont bit;
 
 PImage playerImg, nyan0, coinImg, nyandead, gameOver, restart, bombImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
 PImage[] truck=new PImage[2];
-PImage[] nyanUP= new PImage[2];
-PImage[] nyanR= new PImage[2];
-PImage[] nyanL= new PImage[2];
-PImage[] nyanDead= new PImage[2];
+PImage[] nyanUP= new PImage[3];
+PImage[] nyanR= new PImage[3];
+PImage[] nyanL= new PImage[3];
+PImage[] nyanD= new PImage[3];
+PImage[] nyanDead= new PImage[3];
 PImage logImg; //replace this with coin image
 int landX, landY;
 float tranX=0, tranY=0;
@@ -69,7 +72,7 @@ void initGame() {
       }
     }
   }
-  skin=1;
+  skin=0;
   playerImg=nyanUP[skin];
 }
 
@@ -77,14 +80,16 @@ void initGame() {
 void setup() {
   size(1280, 720, P2D);
   noStroke();
+  bit= createFont("8-BIT WONDER.TTF",80);
+  textFont(bit);
   background(#0d4278);
   textSize(100);
-  text("Loading...",width/2-200,height/2);
+  text("Loading", width/2-350, height/2);
   logImg=loadImage("img/gutter-cover.png");
   coinImg=loadImage("img/coin.png");
   bombImg=loadImage("img/bomb.png");
   gameOver=loadImage("img/gameOver.png");
-  
+
   //music files loading
   minim = new Minim(this);
   bomb = minim.loadSample("music/bomb.mp3");
@@ -98,21 +103,20 @@ void setup() {
   magnet = minim.loadSample("music/magnet.mp3");
   nyna = minim.loadSample("music/nyna.mp3");
   river = minim.loadSample("music/river.mp3");
-//  win = minim.loadSample("music/win.mp3");
-//  wood = minim.loadSample("music/wood.mp3");
+  //  win = minim.loadSample("music/win.mp3");
+  //  wood = minim.loadSample("music/wood.mp3");
   carSound.loop();
 
 
 
-  
+
   //loading nyan Image
-  for (int i=0; i<2; i++) {
+  for (int i=0; i<3; i++) {
     nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
     nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
     nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
+    nyanD[i]=loadImage("img/nyan" + i + "D.png");
     nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-    
-
   }
 
 
@@ -141,7 +145,7 @@ void draw() {
   //Adjust Rolling Speed
   switch (gameState) {
 
-  case GAME_START:  
+  case GAME_START:
     if (tranX<-400) {
       tranX=-400;
       tranY=800;
@@ -169,11 +173,11 @@ void draw() {
     playerImg = nyanDead[skin];
     break;
   }
-  
+
   //bombTimer
-  if(bombMode){
+  if (bombMode) {
     bombTimer-=1;
-    if(bombTimer<0){
+    if (bombTimer<0) {
       bombMode=false;
     }
   }
