@@ -4,7 +4,7 @@ Minim minim;
 AudioSample bomb;
 AudioSample carAccident;
 AudioPlayer carSound;//ok
-AudioSample gameover;
+AudioPlayer gameover;
 AudioSample click;//ok
 AudioSample drop;
 AudioSample eatMoney;
@@ -32,6 +32,7 @@ PImage[] nyanDead= new PImage[3];
 PImage[] nyanRun=new PImage[5];
 PImage cookieImg,flatCoinImg; //replace this with coin image
 int landX, landY;
+float speedRate;
 float tranX=0, tranY=0;
 Player player;
 int playerState;
@@ -52,7 +53,7 @@ NyanCatRun nyan;
 //final Variables for item rate
 final int BOMB_RATE=36;
 final int COIN_RATE=5;
-final int COOKIE_RATE=7;
+final int COOKIE_RATE=70;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
@@ -62,6 +63,7 @@ final int CAR=1;
 
 
 void initGame() {
+  speedRate=1;
   for (int i=0; i<maps.length; i++) {
     if (i<16) {
       maps[i]=new Grass(20-i);
@@ -78,6 +80,7 @@ void initGame() {
   }
   skin=0;
   playerImg=nyanUP[skin];
+  speedRate=1;
 }
 
 
@@ -101,7 +104,7 @@ void setup() {
   bomb = minim.loadSample("music/bomb.mp3");
   carAccident = minim.loadSample("music/car accident.mp3");
   carSound = minim.loadFile("music/car.mp3");
-  gameover = minim.loadSample("music/gameover.mp3");
+  gameover = minim.loadFile("music/gameover.mp3");
   click = minim.loadSample("music/click.mp3");
   drop = minim.loadSample("music/drop.mp3");
   eatMoney = minim.loadSample("music/eat money.mp3");
@@ -144,6 +147,36 @@ void setup() {
 
 
 
+
+
+  //loading nyan Image
+  for (int i=0; i<3; i++) {
+    nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
+    nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
+    nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
+    nyanD[i]=loadImage("img/nyan" + i + "D.png") ;
+    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
+    skinStatus[i]=false;
+  }
+  skinStatus[0]=true;
+
+  //loading Tree & Car Image
+  for (int i=0; i<4; i++) {
+    tree[i] = loadImage("img/tree" + i + ".png") ;
+    car[i] = loadImage("img/car" + i + ".png") ;
+    carR[i] = loadImage("img/car" + i + "_R.png");
+  }
+  
+  for (int i=0; i<5; i++) {
+    nyanRun[i]=loadImage("img/nyanRun" + i + ".png") ;
+  }
+
+  for (int i=0; i<2; i++) {
+    truck[i] = loadImage("img/truck" + i + ".png") ;
+  }
+
+
+
   initGame();
 
   player = new Player();
@@ -151,7 +184,10 @@ void setup() {
 
 
 void draw() {
-
+  
+  //update carspeed
+  speedRate=1+floor(score()/50)*0.25;
+  
   pushMatrix();
   //Adjust Rolling Speed
   switch (gameState) {
@@ -237,6 +273,7 @@ void draw() {
       for (int i=0; i<hintTimer; i++) {
         hintX+=(0.4*hintTimer/32);
         hintY+=(0.1*hintTimer/32);
+        gameover.play();
       }
     }
     drawImage(gameOver, hintX-80, hintY);
