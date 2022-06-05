@@ -68,6 +68,7 @@ class Road extends Map {
           hintTimer=60;
           hintX=-400;
           hintY=150;
+          carAccident.trigger();
         }
       }
     }
