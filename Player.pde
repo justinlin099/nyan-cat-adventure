@@ -14,7 +14,11 @@ class Player {
 
 
   void update() {
-
+    if(lightningMode){
+      if(lightningTimer%2==0){
+        tint(255,128);
+      }
+    }
     switch(playerState) {
     case PLAYER_IDLE:
       if (maps[12].type==GRASS) {
@@ -52,6 +56,8 @@ class Player {
       playerImg=nyanR[skin];
       break;
     }
+    
+    tint(255,255);
 
     if (debugMode) {
       fill(0);

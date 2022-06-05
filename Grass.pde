@@ -3,6 +3,7 @@ class Grass extends Map {
   Coin coin;
   Bomb bomb;
   Cookie cookie;
+  Lightning lightning;
   Grass(int y) {
     super(y);
     type=GRASS;
@@ -35,6 +36,10 @@ class Grass extends Map {
     
     if(y%COOKIE_RATE==0 && y!=0){
       cookie=new Cookie(3+floor(random(3)), y);
+    }
+    
+    if(y%LIGHTNING_RATE==0 && y!=0){
+      lightning=new Lightning(3+floor(random(3)), y);
     }
   }
 
@@ -81,6 +86,11 @@ class Grass extends Map {
     if (y%COOKIE_RATE==0 && y!=0) {
       cookie.display();
       cookie.checkCollision(player);
+    }
+    
+    if (y%LIGHTNING_RATE==0 && y!=0) {
+      lightning.display();
+      lightning.checkCollision(player);
     }
   }
 

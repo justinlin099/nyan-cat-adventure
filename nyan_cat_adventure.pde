@@ -19,7 +19,7 @@ boolean isPlaying = true;
 //FONT
 PFont bit;
 
-PImage playerImg, nyan0, coinImg, nyandead, gameOver, gameStart, bombImg,rainbow;
+PImage playerImg, nyan0, coinImg, nyandead, gameOver, gameStart, bombImg,rainbow,lightningImg;
 PImage[] tree=new PImage[4];
 PImage[] car=new PImage[4];
 PImage[] carR=new PImage[4];
@@ -44,16 +44,17 @@ int coinCount=0;
 int hiScore=0;
 int hintTimer, skin;
 float hintX, hintY;
-boolean bombMode=false;
-int bombTimer;
+boolean bombMode=false,lightningMode=false;
+int bombTimer,lightningTimer;
 boolean[] skinStatus=new boolean[3];
 NyanCatRun nyan;
 
 
 //final Variables for item rate
-final int BOMB_RATE=36;
+final int BOMB_RATE=41;
 final int COIN_RATE=5;
 final int COOKIE_RATE=70;
+final int LIGHTNING_RATE=37;
 
 boolean debugMode=false;
 Map[] maps=new Map[40];
@@ -98,7 +99,8 @@ void setup() {
   gameStart=loadImage("img/start.png");
   flatCoinImg=loadImage("img/flatCoin.png");
   rainbow=loadImage("img/Rainbow.png");
-
+  lightningImg =loadImage("img/lightning.png");
+  
   //music files loading
   minim = new Minim(this);
   bomb = minim.loadSample("music/bomb.mp3");
@@ -203,6 +205,14 @@ void draw() {
     bombTimer-=1;
     if (bombTimer<0) {
       bombMode=false;
+    }
+  }
+  
+  //lightningTimer
+  if (lightningMode) {
+    lightningTimer-=1;
+    if (lightningTimer<0) {
+      lightningMode=false;
     }
   }
 

@@ -64,6 +64,8 @@ class Road extends Map {
           coinCount++;
           eatMoney.trigger();
           cars[i].isAlive=false;
+        } else if (lightningMode) {
+          
         } else {
           gameState=GAME_OVER;
           hintTimer=60;
