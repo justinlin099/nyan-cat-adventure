@@ -237,6 +237,7 @@ void draw() {
       for (int i=0; i<hintTimer; i++) {
         hintX+=(0.4*hintTimer/32);
         hintY+=(0.1*hintTimer/32);
+        gameover.trigger();
       }
     }
     drawImage(gameOver, hintX-80, hintY);
