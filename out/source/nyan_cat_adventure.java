@@ -29,7 +29,7 @@ AudioSample drop;
 AudioSample eatMoney;
 AudioSample jump;//ok
 AudioSample magnet;
-AudioSample nyna;
+AudioPlayer nyna;
 AudioSample river;
 //AudioSample win;
 //AudioSample wood;
@@ -97,7 +97,7 @@ final int CAR=1;
       }
     }
   }
-  skin=0;
+  
   playerImg=nyanUP[skin];
   speedRate=1;
 }
@@ -129,7 +129,7 @@ final int CAR=1;
   eatMoney = minim.loadSample("music/eat money.mp3");
   jump = minim.loadSample("music/jump.mp3");
   magnet = minim.loadSample("music/magnet.mp3");
-  nyna = minim.loadSample("music/nyna.mp3");
+  nyna = minim.loadFile("music/nyna.mp3");
   river = minim.loadSample("music/river.mp3");
   //  win = minim.loadSample("music/win.mp3");
   //  wood = minim.loadSample("music/wood.mp3");
@@ -163,6 +163,12 @@ final int CAR=1;
   for (int i=0; i<2; i++) {
     truck[i] = loadImage("img/truck" + i + ".png") ;
   }
+
+  skin=0;
+
+
+
+  
 
 
 
@@ -262,6 +268,7 @@ final int CAR=1;
       for (int i=0; i<hintTimer; i++) {
         hintX+=(0.4f*hintTimer/32);
         hintY+=(0.1f*hintTimer/32);
+        gameover.trigger();
       }
     }
     drawImage(gameOver, hintX-80, hintY);
@@ -598,7 +605,7 @@ class Cookie {
       image(nyanD[i], 30+120*i, height-100);
     }
     textSize(20);
-    text(i,100+120*i,height-20);
+    text(i+1,100+120*i,height-20);
   }
   tint(255);
 }
@@ -932,12 +939,14 @@ class Road extends Map {
       if (cars[i].checkCollision(player, PLAYER_UP) && gameState==GAME_RUN && cars[i].isAlive) {
         if (bombMode) {
           coinCount++;
+          eatMoney.trigger();
           cars[i].isAlive=false;
         } else {
           gameState=GAME_OVER;
           hintTimer=60;
           hintX=-400;
           hintY=150;
+          carAccident.trigger();
         }
       }
     }
@@ -1074,6 +1083,7 @@ class NyanCatRun {
     nyanX=100;
     nyanY=height/2;
     nyanIndex=0;
+    nyna.loop();
     for (int i=0; i<11; i++) {
       coins[i]=new FlatCoin(width-120*i,60+120*PApplet.parseInt(random(5)));
     }
@@ -1120,6 +1130,8 @@ class NyanCatRun {
 
     if (timer>time) {
       gameState=GAME_RUN;
+      nyna.pause();
+      nyna.rewind();
     }
   }
 }

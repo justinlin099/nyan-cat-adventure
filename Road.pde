@@ -62,6 +62,7 @@ class Road extends Map {
       if (cars[i].checkCollision(player, PLAYER_UP) && gameState==GAME_RUN && cars[i].isAlive) {
         if (bombMode) {
           coinCount++;
+          eatMoney.trigger();
           cars[i].isAlive=false;
         } else {
           gameState=GAME_OVER;

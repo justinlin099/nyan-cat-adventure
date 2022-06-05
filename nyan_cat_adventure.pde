@@ -78,7 +78,7 @@ void initGame() {
       }
     }
   }
-  skin=0;
+  
   playerImg=nyanUP[skin];
   speedRate=1;
 }
@@ -145,35 +145,11 @@ void setup() {
     truck[i] = loadImage("img/truck" + i + ".png") ;
   }
 
+  skin=0;
 
 
 
-
-  //loading nyan Image
-  for (int i=0; i<3; i++) {
-    nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
-    nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
-    nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
-    nyanD[i]=loadImage("img/nyan" + i + "D.png") ;
-    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
-    skinStatus[i]=false;
-  }
-  skinStatus[0]=true;
-
-  //loading Tree & Car Image
-  for (int i=0; i<4; i++) {
-    tree[i] = loadImage("img/tree" + i + ".png") ;
-    car[i] = loadImage("img/car" + i + ".png") ;
-    carR[i] = loadImage("img/car" + i + "_R.png");
-  }
   
-  for (int i=0; i<5; i++) {
-    nyanRun[i]=loadImage("img/nyanRun" + i + ".png") ;
-  }
-
-  for (int i=0; i<2; i++) {
-    truck[i] = loadImage("img/truck" + i + ".png") ;
-  }
 
 
 

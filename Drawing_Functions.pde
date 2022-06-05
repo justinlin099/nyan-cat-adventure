@@ -68,7 +68,7 @@ void drawSkinBar() {
       image(nyanD[i], 30+120*i, height-100);
     }
     textSize(20);
-    text(i,100+120*i,height-20);
+    text(i+1,100+120*i,height-20);
   }
   tint(255);
 }
