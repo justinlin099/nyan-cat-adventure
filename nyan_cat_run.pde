@@ -12,6 +12,7 @@ class NyanCatRun {
     nyanX=100;
     nyanY=height/2;
     nyanIndex=0;
+    nyna.loop();
     for (int i=0; i<11; i++) {
       coins[i]=new FlatCoin(width-120*i,60+120*int(random(5)));
     }
@@ -58,6 +59,8 @@ class NyanCatRun {
 
     if (timer>time) {
       gameState=GAME_RUN;
+      nyna.pause();
+      nyna.rewind();
     }
   }
 }

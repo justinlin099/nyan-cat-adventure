@@ -10,7 +10,7 @@ AudioSample drop;
 AudioSample eatMoney;
 AudioSample jump;//ok
 AudioSample magnet;
-AudioSample nyna;
+AudioPlayer nyna;
 AudioSample river;
 //AudioSample win;
 //AudioSample wood;
@@ -110,11 +110,41 @@ void setup() {
   eatMoney = minim.loadSample("music/eat money.mp3");
   jump = minim.loadSample("music/jump.mp3");
   magnet = minim.loadSample("music/magnet.mp3");
-  nyna = minim.loadSample("music/nyna.mp3");
+  nyna = minim.loadFile("music/nyna.mp3");
   river = minim.loadSample("music/river.mp3");
   //  win = minim.loadSample("music/win.mp3");
   //  wood = minim.loadSample("music/wood.mp3");
   carSound.loop();
+
+
+
+
+  //loading nyan Image
+  for (int i=0; i<3; i++) {
+    nyanUP[i]=loadImage("img/nyan" + i + ".png") ;
+    nyanR[i]=loadImage("img/nyan" + i + "R.png") ;
+    nyanL[i]=loadImage("img/nyan" + i + "L.png") ;
+    nyanD[i]=loadImage("img/nyan" + i + "D.png") ;
+    nyanDead[i]=loadImage("img/deadNyan" + i + ".png") ;
+    skinStatus[i]=false;
+  }
+  skinStatus[0]=true;
+
+  //loading Tree & Car Image
+  for (int i=0; i<4; i++) {
+    tree[i] = loadImage("img/tree" + i + ".png") ;
+    car[i] = loadImage("img/car" + i + ".png") ;
+    carR[i] = loadImage("img/car" + i + "_R.png");
+  }
+  
+  for (int i=0; i<5; i++) {
+    nyanRun[i]=loadImage("img/nyanRun" + i + ".png") ;
+  }
+
+  for (int i=0; i<2; i++) {
+    truck[i] = loadImage("img/truck" + i + ".png") ;
+  }
+
 
 
 
@@ -243,6 +273,7 @@ void draw() {
       for (int i=0; i<hintTimer; i++) {
         hintX+=(0.4*hintTimer/32);
         hintY+=(0.1*hintTimer/32);
+        gameover.trigger();
       }
     }
     drawImage(gameOver, hintX-80, hintY);
