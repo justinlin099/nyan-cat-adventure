@@ -113,6 +113,7 @@ void setup() {
   nyna = minim.loadSample("music/nyna.mp3");
   river = minim.loadSample("music/river.mp3");
   win = minim.loadSample("music/win.mp3");
+  gameover = minim.loadSample("music/gameover.mp3");
   wood = minim.loadSample("music/wood.mp3");
   carSound.loop();
 
@@ -206,9 +207,10 @@ void draw() {
       for (int i=0; i<hintTimer; i++) {
         hintX+=(0.4*hintTimer/32);
         hintY+=(0.1*hintTimer/32);
+        gameover.trigger();
       }
     }
-
+    
     drawImage(gameOver, hintX-80, hintY);
     break;
   }
