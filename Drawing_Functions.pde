@@ -58,7 +58,7 @@ void drawScore() {
 void drawSkinBar() {
   textSize(30);
   fill(255);
-  text("Avalible Skins", 30, height-120);
+  text("Available Skins", 30, height-120);
   for (int i=0; i<3; i++) {
     if (skinStatus[i]) {
       tint(255);
